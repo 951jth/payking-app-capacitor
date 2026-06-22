@@ -1,0 +1,17 @@
+<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_3075_31028)">
+<circle cx="18" cy="18" r="18" fill="#DBE8FF"/>
+<circle cx="18" cy="18" r="17" fill="#DBE8FF"/>
+<circle cx="17.9991" cy="17.9991" r="9.44444" fill="#145ED9"/>
+<rect width="1.67119" height="7.0691" rx="0.835594" transform="matrix(0.898597 -0.438774 0.324169 0.945999 13.5469 15.4297)" fill="#DBE8FF"/>
+<rect width="1.67119" height="7.0691" rx="0.835594" transform="matrix(-0.898597 -0.438774 -0.324169 0.945999 19.0449 15.4297)" fill="#DBE8FF"/>
+<rect width="1.67119" height="7.0691" rx="0.835594" transform="matrix(-0.898597 -0.438774 -0.324169 0.945999 22.4531 15.4297)" fill="#DBE8FF"/>
+<rect width="1.67119" height="7.0691" rx="0.835594" transform="matrix(0.898597 -0.438774 0.324169 0.945999 16.9531 15.4297)" fill="#DBE8FF"/>
+<rect x="12.8047" y="17.6641" width="10.3889" height="1.48413" rx="0.742063" fill="#DBE8FF"/>
+</g>
+<defs>
+<clipPath id="clip0_3075_31028">
+<rect width="36" height="36" fill="white"/>
+</clipPath>
+</defs>
+</svg>

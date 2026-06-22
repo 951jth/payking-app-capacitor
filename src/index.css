@@ -1,0 +1,63 @@
+@import "tailwindcss";
+@import "./styles/fonts.css";
+
+:root {
+  --pk-primary: #145ed9;
+  --pk-danger: #e22c17;
+  --pk-text: #191919;
+  --pk-muted: #8b9099;
+  --pk-border: #e7e9ee;
+  --pk-bg: #f2f2f2;
+  --pk-font-scd: "S-CoreDream", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --pk-font-ptd: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+
+  color: var(--pk-text);
+  background: var(--pk-bg);
+  font-family: var(--pk-font-scd);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+@keyframes pk-fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pk-dialog-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 8px)) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes pk-sheet-in {
+  from {
+    transform: translate(-50%, 100%);
+  }
+
+  to {
+    transform: translate(-50%, 0);
+  }
+}
