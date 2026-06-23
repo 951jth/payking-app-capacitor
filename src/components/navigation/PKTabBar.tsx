@@ -60,11 +60,11 @@ export function PKTabBar({ items, activeName, onChange }: PKTabBarProps) {
 
 const classes = {
   bar:
-    '-mt-0.5 flex h-[calc(80px+env(safe-area-inset-bottom))] items-start justify-around bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_12px_rgba(0,0,0,0.12)]',
+    'relative z-50 -mt-0.5 flex h-[calc(80px+env(safe-area-inset-bottom))] items-start justify-around bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_-4px_12px_rgba(0,0,0,0.12)]',
   item:
-    'inline-flex h-20 min-w-0 flex-1 cursor-pointer flex-col items-center justify-start gap-0.5 border-0 bg-transparent px-0 pb-0 pt-3 font-[inherit] text-[#99a2b0] [-webkit-tap-highlight-color:transparent]',
+    'relative z-50 inline-flex h-20 min-w-0 flex-1 cursor-pointer flex-col items-center justify-start gap-0.5 border-0 bg-transparent px-0 pb-0 pt-3 font-[inherit] text-[#99a2b0] [-webkit-tap-highlight-color:transparent]',
   itemActive: 'text-[var(--pk-text)]',
-  itemCenter: 'overflow-visible',
+  itemCenter: 'z-[60] overflow-visible',
   icon: 'inline-flex h-[34px] w-[34px] items-center justify-center overflow-visible',
   label: 'text-[10px] leading-[1.2] text-current',
 }

@@ -1,367 +1,347 @@
 # PayKing Capacitor React 작업 인수인계
 
-이 문서는 다음 터미널/세션에서 작업을 이어가기 위한 현재 상태 요약이다. 구현 방향의 기준 문서는 `docs/PAYKING_APP_REBUILD_NOTES.md`이고, 이 문서는 실제 진행된 변경 사항과 남은 작업을 빠르게 파악하기 위한 로그다.
+이 문서는 다음 세션에서 `payking-capacitor-react` 작업을 이어가기 위한 현재 상태 요약이다.
 
 ## 작업 기준
 
-- 기존 `payking-app` React Native 앱을 React + Capacitor 기반으로 재구성한다.
-- 디자인은 기존 `payking-app`을 최대한 따른다.
+- 현재 프로젝트는 `C:\Users\DPC\workspace\payking-capacitor-react`이다.
+- 비교/마이그레이션 원본 프로젝트는 `/c/Users/DPC/workspace/payking-app`이다.
+- 작업 방식은 `/c/Users/DPC/workspace/payking-app`의 React Native 구현을 읽고, 현재 프로젝트인 React + Capacitor 앱으로 마이그레이션하는 것이다.
+- 구현 방향의 기준 문서는 `docs/PAYKING_APP_REBUILD_NOTES.md`이다.
 - `@tanstack/react-query`는 사용하지 않는다.
 - 서버 상태와 API 호출은 우선 `zustand + service 함수 + axios`로 처리한다.
-- 빌드 명령은 사용자가 명시적으로 요청하지 않는 한 실행하지 않는다.
+- 사용자가 명시적으로 요청하지 않는 한 빌드 명령은 실행하지 않는다.
 - 커밋 메시지 제안 시 컨벤셔널 커밋 형식은 지키되 내용은 한글로 작성한다.
+- 각 activity의 화면 전용 Tailwind class는 파일 하단 `classes` 객체에 모으고 JSX에서는 `classes.key` 형태로 호출한다.
 
-## 완료된 작업
+## 현재 주요 구현 상태
 
-### 1. 앱 골격 생성
+### 1. Stackflow 기반 앱 구조
 
-- Vite 기본 샘플 UI를 제거했다.
-- Stackflow 기반 activity 구조를 만들었다.
-- RN의 `navigation.navigate`, `replace`, `goBack`에 가까운 navigation adapter를 만들었다.
-- 샘플 activity 2개를 추가했다.
-  - `sampleHome`
-  - `sampleDetail`
+- Stackflow 기반 activity 구조가 구성되어 있다.
+- RN의 `navigation.navigate`, `replace`, `goBack`에 가까운 navigation adapter가 있다.
+- activity registry에서 화면 이름, 제목, 인증 메타, 컴포넌트 매핑을 관리한다.
+- PayKing 전용 renderer plugin으로 activity를 앱 프레임 내부 stack layer로 렌더링한다.
 
 주요 파일:
 
-- `src/App.tsx`
-- `src/app/AppProviders.tsx`
 - `src/navigation/activityRegistry.ts`
+- `src/navigation/activityParams.ts`
 - `src/navigation/stackflow.config.ts`
 - `src/navigation/stackflow.ts`
 - `src/navigation/useAppNavigation.ts`
-- `src/activities/SampleHomeActivity.tsx`
-- `src/activities/SampleDetailActivity.tsx`
+- `src/navigation/paykingRendererPlugin.tsx`
+- `src/App.css`
 
-### 2. Stackflow 렌더러 보정
+### 2. 모달/스택 레이아웃 보정
 
-초기에는 `@stackflow/plugin-renderer-basic`을 사용했으나, 이 플러그인은 activity를 단순히 Fragment로 나열해서 새 화면이 기존 화면 아래에 붙는 문제가 있었다.
-
-해결:
-
-- PayKing 전용 renderer plugin을 추가했다.
-- activity를 `.pk-stack` 내부 fixed-size 앱 프레임에 `absolute` layer로 쌓는다.
-- `transitionState` 기반 slide-in / slide-out 애니메이션을 CSS로 적용했다.
-- `.pk-stack`은 데스크톱 브라우저에서 430px 너비로 중앙 배치하고, 바깥 영역은 blur/shadow 처리했다.
+- stack 전환 후 `BottomModal` 위치가 꼬이는 문제를 보정했다.
+- `.pk-shell`을 앱 프레임 기준 컨테이너로 두고, `.pk-stack`과 `.pk-modal-root`를 그 내부에 배치했다.
+- `BottomModal`은 `.pk-modal-root`를 portal container로 사용한다.
+- 하단 시트는 `fixed`가 아니라 앱 프레임 기준 `absolute`로 뜬다.
+- `PKAlert`, `PKConfirm`은 복원 상태를 유지했고 별도 변경하지 않았다.
 
 주요 파일:
 
 - `src/navigation/paykingRendererPlugin.tsx`
-- `src/navigation/stackflow.ts`
 - `src/App.css`
-
-### 3. 폰트 세팅
-
-기존 `payking-app`에서 사용하는 폰트를 가져왔다.
-
-- S-CoreDream 9종 `.ttf`
-- Pretendard 9종 `.otf`
-
-주의:
-
-- `payking-app/src/assets/fonts/pretendard.base64.js`는 실제 폰트 데이터가 아니라 placeholder였다.
-- 실제 Pretendard 파일은 `payking-app/android/app/src/main/assets/fonts`에서 복사했다.
-
-주요 파일:
-
-- `src/assets/fonts/*`
-- `src/styles/fonts.css`
-- `src/utils/font.ts`
+- `src/components/modal/BottomModal.tsx`
 - `src/index.css`
 
-전역 기본 폰트:
+### 3. 공통 컴포넌트
 
-- `--pk-font-scd`: S-CoreDream
-- `--pk-font-ptd`: Pretendard
-
-현재 기본 body font는 `S-CoreDream`이다.
-
-### 4. 공통 컴포넌트 웹 이식
-
-기존 RN 컴포넌트 API를 완전히 복제하지 않고, 화면 포팅에 필요한 형태로 웹 공통 컴포넌트를 만들었다.
-
-추가 컴포넌트:
+현재 결제현황/명세서 포팅에 필요한 공통 컴포넌트가 추가되어 있다.
 
 - `AppContainer`
+- `AppHeader`
 - `PKText`
 - `PKButton`
+- `PKIconButton`
 - `PKInput`
+- `PKSelect`
 - `PKAlert`
 - `PKConfirm`
 - `BottomModal`
-- `AppHeader`
 - `PKTabBar`
+- `PaymentItem`
+- `PKPayStatusesChip`
+- `ToggleChipGroup`
 
 주요 파일:
 
+- `src/components/index.ts`
 - `src/components/layout/AppContainer.tsx`
-- `src/components/typography/PKText.tsx`
 - `src/components/button/PKButton.tsx`
+- `src/components/button/PKIconButton.tsx`
+- `src/components/button/PKMoreButton.tsx`
 - `src/components/input/PKInput.tsx`
+- `src/components/select/PKSelect.tsx`
+- `src/components/modal/BottomModal.tsx`
 - `src/components/modal/PKAlert.tsx`
 - `src/components/modal/PKConfirm.tsx`
-- `src/components/modal/BottomModal.tsx`
-- `src/components/navigation/AppHeader.tsx`
-- `src/components/navigation/PKTabBar.tsx`
-- `src/components/index.ts`
-- `src/styles/components.css`
+- `src/components/listItem/PaymentItem.tsx`
+- `src/components/custom/PKPayStatusesChip.tsx`
+- `src/components/chip/ToggleChipGroup.tsx`
 
-샘플 activity는 현재 이 공통 컴포넌트들을 사용한다.
+### 4. 결제현황 화면 구현
 
-### 5. 서비스 레이어 TS 변환 및 axios 공통 인스턴스
+`payking-app/src/screens/PaymentHistoryScreen.jsx`와 관련 결제 목록 컴포넌트를 기준으로 `PaymentHistoryActivity`를 구현했다.
 
-사용자가 기존 `payking-app` 서비스 레이어를 가져온 상태에서 작업했다.
+구현된 기능:
 
-변경:
-
-- `src/service/*.js`를 `.ts`로 변환했다.
-- `@service/axios/index` alias import를 상대 경로로 바꿨다.
-- `qs` 패키지를 쓰지 않고 내부 query string 유틸로 대체했다.
-- `src/service/axios/index.ts`를 웹/Capacitor 기준으로 새로 작성했다.
-
-주요 파일:
-
-- `src/service/axios/index.ts`
-- `src/utils/queryString.ts`
-- `src/config/env.ts`
-- `src/stores/sessionStore.ts`
-
-axios 인스턴스:
-
-- `authInstance`
-  - access token을 `access_token` header에 주입한다.
-  - 401 + `Expired token`이면 refresh 후 원 요청을 재시도한다.
-  - 401 + `Block Token`이면 logout 처리한다.
-- `noAuthInstance`
-  - device token을 `access_token` header에 주입한다.
-
-환경 변수:
-
-- Vite에서는 API URL을 `VITE_API_URL`로 읽는다.
-- `.env` 예시:
-
-```env
-VITE_API_URL=https://example-api-url
-```
-
-서비스 파일의 개별 payload/response 타입은 아직 넓게 유지했다. 화면 연동 시점에 도메인별로 좁히는 방향이 맞다.
-
-### 6. 공통 기반 생성
-
-Capacitor 기반 공통 어댑터와 store를 만들었다.
-
-추가:
-
-- Capacitor Preferences 기반 Zustand persist storage
-- Device adapter
-- Network adapter
-- deviceStore
-- globalStore
-- app runtime hook
+- 결제현황 상단 요약
+  - 조회 기간
+  - 결제완료 총액
+  - 총 건수
+  - 정렬 select
+  - 새로고침 버튼
+  - 필터 버튼
+- 결제 목록
+  - `PaymentItem` 사용
+  - 상세 클릭 시 `invoice` activity로 이동
+- API 연동
+  - `payments.getMyPaymentSearch`
+  - `payments.getMyStatusStats`
+- 무한스크롤
+  - 현재 페이지 ref 관리
+  - 하단 120px 접근 시 다음 페이지 append
+- 필터 BottomModal
+  - 키워드
+  - 이용 기간
+  - 결제 상태
+  - 취소 요청 상태
+  - 일시불/할부
+  - 결제 구분
+- 상세/취소 플로우 이후 목록 갱신
+  - `payking:payment-history-refresh` 이벤트 수신
+  - 현재 필터/정렬 조건으로 1페이지와 통계를 다시 조회
 
 주요 파일:
 
-- `src/storage/preferencesStorage.ts`
-- `src/adapters/deviceAdapter.ts`
-- `src/adapters/networkAdapter.ts`
-- `src/stores/deviceStore.ts`
-- `src/stores/globalStore.ts`
-- `src/app/useAppRuntime.ts`
-- `src/app/AppProviders.tsx`
+- `src/activities/PaymentHistoryActivity.tsx`
+- `src/components/listItem/PaymentItem.tsx`
+- `src/components/custom/PKPayStatusesChip.tsx`
+- `src/components/chip/ToggleChipGroup.tsx`
+- `src/utils/paymentHistory.ts`
 
-역할:
+### 5. 결제 명세서 화면 구현
 
-- `preferencesStorage`
-  - Zustand persist를 Capacitor Preferences에 저장한다.
-- `useSessionStore`
-  - `accessToken`, `deviceToken` 저장
-- `useDeviceStore`
-  - Capacitor `Device`, `App` 기반 device info 생성
-  - 디바이스 등록 API 호출
-  - device token 발급 API 호출
-- `useGlobalStore`
-  - app foreground/background 상태
-  - CS 정보
-  - guide link 정보
-- `useAppRuntime`
-  - Capacitor App appStateChange listener
-  - Network status listener
+`payking-app/src/screens/InvoiceScreen.jsx`를 기준으로 `InvoiceActivity`를 구현했다.
 
-### 7. 디바이스 등록 및 API 환경 설정
+구현된 기능:
 
-`payking-link`의 웹 디바이스 등록 흐름을 참고해 웹/Capacitor 공통 등록 구조를 보강했다.
-
-변경:
-
-- 웹 접속 시 `osType`은 `WEB`으로 보낸다.
-- `navigator.userAgent`를 `model`로 사용한다.
-- 브라우저명/버전을 `osVersion`으로 파싱한다.
-- 저장된 UUID가 있으면 재사용하고, 없으면 신규 UUID를 생성한다.
-- 앱 시작 시 session/device store hydration 완료 후 자동으로 디바이스 등록과 device token 발급을 시도한다.
-- 로그인 화면에서 device token이 없으면 로그인 버튼을 비활성화하고 재시도 UX를 제공한다.
-
-주요 파일:
-
-- `src/adapters/deviceAdapter.ts`
-- `src/stores/deviceStore.ts`
-- `src/app/useAppRuntime.ts`
-- `src/activities/LoginActivity.tsx`
-
-API 환경 변수:
-
-- `.env`는 Vite 규칙에 맞춰 `VITE_` prefix를 사용한다.
-- `VITE_API_URL`은 axios `baseURL`로 사용된다.
-- 값이 없으면 개발계 `https://api-dev.pay-king.co.kr`로 fallback된다.
-- `src/config/env.ts`에서 trailing slash를 제거한다.
-
-### 8. 로그인 API 및 인증 API 샘플
-
-기존 RN `LoginScreen.jsx`와 동일한 payload로 로그인 API를 연결했다.
-
-로그인 요청:
-
-```ts
-{
-  'device-token': deviceToken,
-  'access-point': 'APP',
-  username: id,
-  password
-}
-```
-
-로그인 성공 처리:
-
-- `response.data.token` 또는 `response.data.data.token`을 access token으로 인식한다.
-- `useSessionStore.setAccessToken(token)`으로 저장한다.
-- `userHome` activity로 `replace` 이동한다.
-
-인증 API 샘플:
-
-- `userHome` 진입 시 `userService.getMyInfo({})`를 호출한다.
-- 이 호출은 `authInstance`를 사용하므로 access token header 주입과 401 refresh 흐름을 확인하는 샘플 역할을 한다.
-- 화면의 `인증 API 재호출` 버튼으로 수동 재시도할 수 있다.
-
-401 처리:
-
-- `authInstance`는 401 + `Expired token` 응답이면 `/api/auth/v1/refresh`를 호출한다.
-- refresh 성공 시 새 access token을 저장하고 원 요청을 재시도한다.
-- refresh 실패 또는 401 + `Block Token`이면 `logout()`으로 access token을 제거한다.
-- access token이 제거되면 `AuthRouteGuard`가 인증 activity에서 `login`으로 돌려보낸다.
+- `payments.getPayDetail(id)`로 결제 상세 조회
+- 결제 정보 표시
+  - 항목
+  - 결제요청일/결제일
+  - 결제 취소 요청일
+  - 결제 취소일
+  - 구매자명
+  - 구매자 휴대폰번호
+  - 구매자 주소
+  - 결제 금액
+  - 문화비소득공제
+  - 할부 구분
+  - 결제 구분
+  - 결제 상태
+- 다중 transaction 표시
+- 취소요청 입금정보 표시
+  - `cancelRequestStatus`가 `REQUEST` 또는 `COMPLETE`일 때 표시
+  - 입금금액, 입금자명, 입금은행, 입금계좌, 예금주
+- 영수증 보내기
+  - 카드 결제이고 성공/취소/취소요청 상태일 때 버튼 노출
+  - 전화번호 입력 BottomModal
+  - `payments.sendPayReceipt(id, phoneNumber)` 호출
+- 결제 취소/요청 취소
+  - `결제 요청 취소`
+  - `결제 취소`
+  - `결제 취소 요청 취소`
+  - 성공 후 상세 재조회 및 결제현황 목록 갱신 이벤트 발행
+- 결제 취소 요청 신규 생성
+  - `cancelRequest` activity로 이동
 
 주요 파일:
 
-- `src/activities/LoginActivity.tsx`
-- `src/activities/UserHomeActivity.tsx`
-- `src/service/axios/index.ts`
-- `src/service/user.ts`
+- `src/activities/InvoiceActivity.tsx`
+- `src/types/payment.ts`
 
-## 현재 검증 상태
+### 6. 결제 취소 요청 화면 구현
 
-마지막 확인 기준:
+`payking-app/src/screens/CancelRequest.jsx`를 기준으로 `CancelRequestActivity`를 추가했다.
 
-```bash
-.\node_modules\.bin\eslint.cmd .
-.\node_modules\.bin\tsc.cmd --noEmit -p tsconfig.app.json
-```
+구현된 기능:
 
-둘 다 통과했다.
+- `payments.getPayDetail(id)`로 결제 정보 조회
+- `standard.getPayReqCancelDeposit()`로 취소요청 입금계좌 조회
+- 취소금액 표시
+- 입금계좌 안내 표시
+- 구매자 휴대폰번호, 결제상품, 결제금액 표시
+- 입금자명 입력
+- 확인 모달 후 `payments.cancelPay(id, data)` 호출
+  - `cancelReqStatus: 'REQUEST'`
+  - 입금계좌/은행/예금주/입금금액/입금자명 payload 포함
+- 성공 후
+  - `payking:invoice-refresh` 이벤트 발행
+  - `payking:payment-history-refresh` 이벤트 발행
+  - 이전 화면으로 이동
 
-빌드 명령은 사용자 규칙에 따라 실행하지 않았다.
+주요 파일:
 
-## 알려진 주의사항
+- `src/activities/CancelRequestActivity.tsx`
+- `src/navigation/activityParams.ts`
+- `src/navigation/activityRegistry.ts`
+- `src/navigation/stackflow.config.ts`
 
-### yarn 실행 이슈
+### 7. 결제 취소 권한 조건 복원
 
-PowerShell에서 `yarn`은 실행 정책 때문에 `yarn.ps1`이 막힐 수 있다. 이 경우 `yarn.cmd`를 사용한다.
+RN 기준 권한 조건을 Capacitor 프로젝트에 반영했다.
 
-```bash
-yarn.cmd dev
-```
+조건:
 
-### yarn add 이슈
+- `user.authority === 'MANAGE'`
+- 또는 `authes.isPayCancel === true`
 
-이전에 `@stackflow/config`, `@stackflow/core` 추가 과정에서 Windows 파일 잠금 때문에 `@rolldown` native binding unlink 단계가 실패한 적이 있다. `package.json`에는 의존성을 반영했고, `node_modules`에는 패키지가 내려받아져 타입 검사는 통과했다.
+구현:
 
-추후 의존성 정리가 필요하면 dev server, Cursor/Node 프로세스 종료 후 재설치하는 것이 안전하다.
+- `userStore`에 `authes` 상태 추가
+- `user.authority !== 'MANAGE'`인 경우 `userService.getAuth(userNo)` 호출
+- `InvoiceActivity`에서 취소 관련 버튼 노출 조건에 권한 반영
+- `CancelRequestActivity` 직접 진입 시에도 권한이 없으면 알림 후 뒤로가기
 
-### git 상태
+주요 파일:
 
-`payking-capacitor-react` 폴더는 현재 git 저장소로 인식되지 않았다. 그래서 `git status`, `git diff --check` 기반 검증은 사용할 수 없었다.
+- `src/stores/userStore.ts`
+- `src/activities/InvoiceActivity.tsx`
+- `src/activities/CancelRequestActivity.tsx`
 
-### TypeScript 설정
+### 8. 결제 도메인 타입 공통화
 
-서비스 레이어를 기존 JS 호환 형태로 변환하기 위해 `tsconfig.app.json`에 다음 설정을 추가했다.
+결제 상세/취소요청 화면에서 중복 선언하던 API 응답 타입을 공통 타입 파일로 분리했다.
 
-```json
-"noImplicitAny": false
-```
+추가 타입:
 
-이건 임시 품질 저하라기보다, 기존 서비스 함수가 매우 넓은 payload를 받기 때문에 화면 연동 전 단계에서 현실적으로 선택한 설정이다. 이후 화면별로 payload/response 타입을 좁힐 수 있다.
+- `PaymentTransaction`
+- `CancelRequestDeposit`
+- `PaymentDetail`
+- `CancelPayResult`
 
-## 다음 작업 순서
+주요 파일:
 
-### 4번. 인증 플로우 구현
+- `src/types/payment.ts`
+- `src/activities/InvoiceActivity.tsx`
+- `src/activities/CancelRequestActivity.tsx`
 
-우선순위가 가장 높다.
+### 9. 모바일 레이아웃 보정
 
-목표:
+실제 모바일 화면에서 깨질 가능성이 있는 부분을 정적으로 점검하고 보정했다.
 
-- `permission`
-- `findId`
-- `findPw`
-- 로그인 후 `homeMain` 진입
-- 로그인 실패/디바이스 등록 실패 UX 정교화
+보정 내용:
 
-구현 방향:
-
-- `login` activity와 로그인 API 연동은 완료됐다.
-- 현재 로그인 성공 시 임시 `userHome`으로 진입한다.
-- 다음 단계에서 `homeMain` activity를 만들고 로그인 성공 이동 목적지를 교체한다.
-- `standard.getCSInfo()`는 문의하기 모달 연결 시 필요하다.
-
-참고할 기존 RN 파일:
-
-- `payking-app/src/screens/auth/LoginScreen.jsx`
-- `payking-app/src/screens/auth/FindIDScreen.jsx`
-- `payking-app/src/screens/auth/FindPWScreen.jsx`
-- `payking-app/src/screens/auth/PermissionScreen.jsx`
-- `payking-app/src/navigation/RootNavigator.jsx`
-- `payking-app/src/hook/useScreens.js`
-
-### 5번. 메인 탭 shell 구현
-
-인증 플로우 후 진행한다.
-
-목표:
-
-- `homeMain` activity 추가
-- 내부 `TabLayout` 상태 관리
-- 홈 / 결제현황 / 링크QR 액션 / 정산현황 / 메뉴 탭 shell 구성
-- 기존 `MainTabNavigator`와 `CustomTabBar` 시각 구조 유지
-
-참고할 기존 RN 파일:
-
-- `payking-app/src/navigation/MainTabNavigator.jsx`
-- `payking-app/src/components/tabs/CustomTabBar.jsx`
-- `payking-app/src/hook/useScreens.js`
-
-### 6번. 네이티브 기능 매핑
-
-메인 shell 이후 진행한다.
-
-분류 대상:
-
-- Camera
-- Push Notifications
-- Deeplink
-- WebView
-- Device info
-- Network status
-- 카드 OCR / 키인 결제
+- `InvoiceActivity`
+  - 긴 label/value 행에서 값 영역이 밀리지 않도록 grid column 조정
+  - 하단 2버튼이 균등 배치되도록 `flex-1 min-w-0` 적용
+- `CancelRequestActivity`
+  - 하단 2버튼 균등 배치
+- `PaymentHistoryActivity`
+  - 상단 toolbar가 좁은 화면에서 줄바꿈 가능하도록 조정
 
 주의:
 
-- `CardScanScreen`은 RN `NativeModules.NativeViewManager.presentOCRView`에 강하게 묶여 있으므로, Capacitor 커스텀 플러그인 후보로 분리해야 한다.
+- Vite dev server는 같은 PowerShell 세션 내에서 HTTP 200 응답을 확인했다.
+- 인앱 브라우저 연결은 런타임 경로 문제로 스크린샷 QA까지 완료하지 못했다.
+- 로그인 후 실제 API 데이터 기반 모바일 QA는 아직 남아 있다.
+
+## 현재 검증 상태
+
+최근 확인:
+
+- `git diff --check` 통과
+- 관련 파일 trailing whitespace 검사 통과
+- Vite dev server는 같은 세션 내 HTTP 200 응답 확인
+
+실행하지 않은 것:
+
+- 사용자가 명시적으로 요청하지 않았으므로 빌드 명령은 실행하지 않았다.
+- TypeScript 빌드/타입체크 명령도 실행하지 않았다.
+
+## 현재 git/작업 상태 메모
+
+- 현재 `payking-capacitor-react`는 git 상태 확인이 가능하다.
+- 여러 파일이 이미 수정/추가된 상태다.
+- 새로 추가된 주요 파일:
+  - `src/activities/InvoiceActivity.tsx`
+  - `src/activities/CancelRequestActivity.tsx`
+  - `src/types/payment.ts`
+  - `src/utils/paymentHistory.ts`
+  - `src/components/listItem/PaymentItem.tsx`
+  - `src/components/custom/PKPayStatusesChip.tsx`
+  - `src/components/chip/ToggleChipGroup.tsx`
+  - `src/components/select/PKSelect.tsx`
+  - `src/components/button/PKMoreButton.tsx`
+
+## 남은 작업 추천 순서
+
+### 1. 결제현황 필터 초기화 버튼 추가
+
+목표:
+
+- 필터 BottomModal에 초기화 버튼 추가
+- `initFilter`로 modal filter 리셋
+- 적용 상태 표시가 필요하면 summary 또는 filter button 상태로 확장
+
+대상 파일:
+
+- `src/activities/PaymentHistoryActivity.tsx`
+
+### 2. 실제 모바일 QA
+
+목표:
+
+- 로그인 후 실제 API 데이터로 다음 화면을 확인한다.
+  - 결제현황
+  - 결제 명세서
+  - 영수증 보내기 BottomModal
+  - 결제 취소 confirm
+  - 결제 취소 요청 화면
+- 320px, 375px, 430px 폭 기준으로 텍스트 겹침/하단 버튼/모달 위치 확인
+
+주의:
+
+- QA 중 실제 취소/영수증 전송은 외부 효과가 있으므로 테스트 계정/테스트 결제 데이터로만 진행해야 한다.
+
+### 3. 결제현황 API 타입 확장
+
+목표:
+
+- `PaymentListItem`을 `src/types/payment.ts`로 이동하거나 확장
+- 결제 상태/취소요청 상태 union type 정리
+- `PaymentHistorySearchParams`, stats 응답 타입도 공통화 검토
+
+대상 파일:
+
+- `src/types/payment.ts`
+- `src/activities/PaymentHistoryActivity.tsx`
+- `src/components/listItem/PaymentItem.tsx`
+
+### 4. 정기결제 명세서 보기 이식
+
+RN `InvoiceScreen.jsx`에는 `payType === 'RECURRING'`일 때 정기결제 명세서 보기 버튼이 있다.
+
+남은 작업:
+
+- `payments.getRecurringPayPayment(id)` 연결
+- 이동 대상 activity 설계
+- 기존 `subscriptionDetail` 화면 마이그레이션 범위 확인
+
+### 5. 인증/메인 탭 후속 정리
+
+초기 문서의 인증/메인 탭 작업은 일부 진행된 상태지만, 현재 우선순위는 결제현황 마이그레이션이다.
+
+남은 작업:
+
+- 로그인 성공 이동 목적지 최종 확정
+- `homeMain` 탭 shell과 실제 탭별 화면 범위 정리
+- `userHome` 임시 인증 샘플 화면 유지/제거 판단
 
 ## 작업 스타일 메모
 
@@ -369,7 +349,4 @@ yarn.cmd dev
 - 한글 주석/문자열이 있으므로 파일 읽기는 UTF-8을 명시한다.
 - `apply_patch`로 파일 수정하는 것을 우선한다.
 - 빌드는 사용자가 요청하기 전까지 실행하지 않는다.
-- 최종 응답에는 항상 다음 작업 순서를 포함한다.
-- 각 screen/activity의 화면 전용 스타일은 Tailwind class로 작성한다.
-- activity 내부 Tailwind class 문자열은 파일 하단의 `classes` 객체에 모으고, JSX에서는 `classes.key` 형태로 호출한다.
-- 공통 컴포넌트 재사용 스타일은 `src/styles/components.css`에 둔다.
+- 최종 응답에는 다음 작업 순서를 포함한다.

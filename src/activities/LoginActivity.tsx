@@ -2,34 +2,24 @@ import type { ActivityComponentType } from "@stackflow/react";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import logoPayking from "../assets/icons/Logo_payking_simple.svg";
-import {
-  AppContainer,
-  PKButton,
-  PKConfirm,
-  PKInput,
-  PKText,
-} from "../components";
+import { AppContainer, CSInquiryButton, PKButton, PKInput, PKText } from "../components";
 import { useAppNavigation } from "../navigation/useAppNavigation";
 import authService from "../service/auth";
 import { getResponseToken, type ApiResponse } from "../service/axios";
 import { useAlertStore } from "../stores/alertStore";
 import { useDeviceStore } from "../stores/deviceStore";
-import { useGlobalStore } from "../stores/globalStore";
 import { useSessionStore } from "../stores/sessionStore";
-import { formatTelephone } from "../utils/format";
 
 export const LoginActivity: ActivityComponentType<"login"> = () => {
   const navigation = useAppNavigation();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmVisible, setConfirmVisible] = useState(false);
   const showAlert = useAlertStore((state) => state.showAlert);
   const [loggingIn, setLoggingIn] = useState(false);
   const deviceToken = useSessionStore((state) => state.deviceToken);
   const deviceReady = useDeviceStore((state) => state.deviceReady);
   const registerDevice = useDeviceStore((state) => state.registerDevice);
   const setAccessToken = useSessionStore((state) => state.setAccessToken);
-  const csInfo = useGlobalStore((state) => state.CSInfo);
 
   const handleLogin = async () => {
     if (loggingIn) return;
@@ -76,14 +66,6 @@ export const LoginActivity: ActivityComponentType<"login"> = () => {
         contents: "디바이스 인증 요청에 실패했습니다.",
       });
     });
-  };
-
-  const handleCallCS = () => {
-    setConfirmVisible(false);
-
-    if (csInfo?.csTelNumber) {
-      window.location.href = `tel:${csInfo.csTelNumber}`;
-    }
   };
 
   return (
@@ -145,24 +127,12 @@ export const LoginActivity: ActivityComponentType<"login"> = () => {
         )}
 
         <div className={classes.links}>
-          <PKButton
-            buttonType="text"
-            className={classes.linkButton}
-            onClick={() => setConfirmVisible(true)}
-            textClassName={classes.linkButtonText}
-            title="문의하기"
-          />
+          <CSInquiryButton />
           <div className={classes.linkGroup}>
             <PKButton
               buttonType="text"
               className={classes.linkButton}
-              onClick={() =>
-                showAlert({
-                  title: "준비 중",
-                  contents:
-                    "아이디/비밀번호 찾기 화면은 인증 라우트 정리 후 연결합니다.",
-                })
-              }
+              onClick={() => navigation.navigate("findId", {})}
               textClassName={classes.linkButtonText}
               title="아이디 찾기"
             />
@@ -170,43 +140,13 @@ export const LoginActivity: ActivityComponentType<"login"> = () => {
             <PKButton
               buttonType="text"
               className={classes.linkButton}
-              onClick={() =>
-                showAlert({
-                  title: "준비 중",
-                  contents:
-                    "아이디/비밀번호 찾기 화면은 인증 라우트 정리 후 연결합니다.",
-                })
-              }
+              onClick={() => navigation.navigate("findPw", {})}
               textClassName={classes.linkButtonText}
               title="비밀번호 찾기"
             />
           </div>
         </div>
       </section>
-
-      <PKConfirm
-        confirmColorType="solid-primary"
-        confirmTitle="전화걸기"
-        contents={
-          <div className={classes.alertContents}>
-            <PKText className={classes.alertPhone}>
-              {csInfo?.csTelNumber ? formatTelephone(csInfo.csTelNumber) : "-"}
-            </PKText>
-            <PKText className={classes.alertDesc}>
-              {csInfo?.csTelDetail ?? "-"}
-            </PKText>
-          </div>
-        }
-        onConfirm={handleCallCS}
-        onOpenChange={setConfirmVisible}
-        onReject={() => setConfirmVisible(false)}
-        title={
-          <PKText className={classes.alertTitle}>
-            이용문의는 고객센터로 연락주세요.
-          </PKText>
-        }
-        visible={confirmVisible}
-      />
     </AppContainer>
   );
 };
@@ -243,8 +183,4 @@ const classes = {
   linkButtonText: "text-xs font-extralight leading-none text-[var(--pk-muted)]",
   linkDivider:
     "inline-flex h-6 shrink-0 items-center m-0 text-xs font-extralight leading-none text-[var(--pk-muted)]",
-  alertTitle: "text-center text-xl font-medium leading-6 text-[var(--pk-text)]",
-  alertContents: "mt-6 mb-[25px] flex flex-col items-center gap-2",
-  alertPhone: "text-[36px] leading-[41px] font-bold text-[var(--pk-primary)]",
-  alertDesc: "text-sm font-normal text-[var(--pk-muted)]",
 };

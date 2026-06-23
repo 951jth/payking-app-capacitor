@@ -11,6 +11,7 @@ type PKConfirmProps = {
   confirmTitle?: string
   rejectColorType?: 'primary' | 'warning' | 'disable'
   confirmColorType?: 'primary' | 'warning' | 'solid-primary' | 'solid-red'
+  contentsClassName?: string
   onReject?: () => void
   onConfirm?: () => void
   onOpenChange?: (open: boolean) => void
@@ -24,6 +25,7 @@ export function PKConfirm({
   confirmTitle = '확인',
   rejectColorType = 'disable',
   confirmColorType = 'primary',
+  contentsClassName,
   onReject,
   onConfirm,
   onOpenChange,
@@ -51,7 +53,13 @@ export function PKConfirm({
                   {contents}
                 </PKText>
               ) : (
-                <div className={classes.description}>{contents}</div>
+                <div
+                  className={[classes.description, contentsClassName]
+                    .filter(Boolean)
+                    .join(' ')}
+                >
+                  {contents}
+                </div>
               )}
             </AlertDialog.Description>
           )}

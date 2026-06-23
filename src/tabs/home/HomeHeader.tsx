@@ -4,6 +4,7 @@ import iconCs from "../../assets/icons/Icon_cs.svg";
 import iconSetting from "../../assets/icons/Icon_setting.svg";
 import logoPayking from "../../assets/icons/Logo_payking_simple.svg";
 import { PKIconButton } from "../../components";
+import { useAppNavigation } from "../../navigation/useAppNavigation";
 import { useAlertStore } from "../../stores/alertStore";
 
 const KAKAO_CS_URL = "https://pf.kakao.com/_xexhfxixj";
@@ -13,6 +14,7 @@ type HomeHeaderProps = {
 };
 
 export function HomeHeader({ noticeUnreadCount }: HomeHeaderProps) {
+  const navigation = useAppNavigation();
   const showAlert = useAlertStore((state) => state.showAlert);
 
   const openPlaceholder = (label: string) => {
@@ -52,7 +54,7 @@ export function HomeHeader({ noticeUnreadCount }: HomeHeaderProps) {
           icon={
             <img alt="" className={classes.iconSetting} src={iconSetting} />
           }
-          onClick={() => openPlaceholder("설정")}
+          onClick={() => navigation.navigate("setting", {})}
         />
       </div>
     </header>

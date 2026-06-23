@@ -17,9 +17,9 @@ export function QrCodeTabButton() {
 
 const classes = {
   iconImage: 'pointer-events-none block h-auto w-auto select-none object-none',
-  qr: 'mb-[13px] inline-flex w-[60px] flex-col items-center justify-start gap-1',
+  qr: 'relative z-[70] mb-[13px] inline-flex w-[60px] flex-col items-center justify-start gap-1',
   qrButton:
-    'inline-flex h-[60px] w-[60px] items-center justify-center overflow-hidden rounded-full bg-[var(--pk-primary)]',
+    'relative z-[70] inline-flex h-[60px] w-[60px] items-center justify-center overflow-hidden rounded-full bg-[var(--pk-primary)]',
   qrGif:
     'pointer-events-none block h-[50px] w-[50px] select-none rounded-full object-cover',
   qrLabel:

@@ -10,6 +10,8 @@ export type GuideLinkInfo = {
   isCancelGuide?: boolean
   payGuideUrl?: string
   cancelGuideUrl?: string
+  isManualGuide?: boolean
+  manualGuideUrl?: string
 }
 
 type GlobalState = {

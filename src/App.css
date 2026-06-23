@@ -8,7 +8,7 @@
     #eef2f7;
 }
 
-.pk-stack {
+.pk-shell {
   position: relative;
   width: min(100vw, 430px);
   min-height: 100svh;
@@ -20,13 +20,32 @@
     0 24px 72px rgba(18, 31, 55, 0.24);
 }
 
-.pk-stack::before {
+.pk-shell::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+}
+
+.pk-stack {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--pk-bg);
+}
+
+.pk-modal-root {
+  position: absolute;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+}
+
+.pk-modal-root > * {
+  pointer-events: auto;
 }
 
 .pk-activity {

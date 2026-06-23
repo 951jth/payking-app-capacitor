@@ -64,7 +64,7 @@ const classes = {
     'flex min-h-0 flex-1 flex-col overflow-y-auto [-webkit-overflow-scrolling:touch]',
   contentScrollable: 'box-border min-h-full w-full',
   contentFlex: 'box-border flex min-h-0 w-full flex-1 flex-col overflow-hidden',
-  bottomBare: 'z-10 shrink-0 bg-white',
+  bottomBare: 'relative z-50 shrink-0 bg-white',
   bottomPadded:
-    'z-10 shrink-0 bg-white px-5 pb-[calc(20px+env(safe-area-inset-bottom))] pt-4',
+    'relative z-50 shrink-0 bg-white px-5 pb-[calc(20px+env(safe-area-inset-bottom))] pt-4',
 }

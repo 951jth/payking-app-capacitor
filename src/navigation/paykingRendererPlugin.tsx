@@ -10,23 +10,26 @@ export function paykingRendererPlugin(): StackflowReactPlugin {
         .activities.filter((activity) => activity.transitionState !== 'exit-done')
 
       return (
-        <div className="pk-stack">
-          <AuthRouteGuard
-            topActivityName={activities.find((activity) => activity.isTop)?.name}
-          />
-          {activities.map((activity, index) => (
-            <div
-              className="pk-activity"
-              data-active={activity.isActive}
-              data-root={activity.isRoot}
-              data-top={activity.isTop}
-              data-transition={activity.transitionState}
-              key={activity.key}
-              style={{ zIndex: index + 1 }}
-            >
-              {activity.render()}
-            </div>
-          ))}
+        <div className="pk-shell">
+          <div className="pk-stack">
+            <AuthRouteGuard
+              topActivityName={activities.find((activity) => activity.isTop)?.name}
+            />
+            {activities.map((activity, index) => (
+              <div
+                className="pk-activity"
+                data-active={activity.isActive}
+                data-root={activity.isRoot}
+                data-top={activity.isTop}
+                data-transition={activity.transitionState}
+                key={activity.key}
+                style={{ zIndex: index + 1 }}
+              >
+                {activity.render()}
+              </div>
+            ))}
+          </div>
+          <div className="pk-modal-root" />
         </div>
       )
     },

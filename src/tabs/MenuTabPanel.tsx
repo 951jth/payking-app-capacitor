@@ -1,10 +1,24 @@
 import iconArrowRight from '../assets/icons/Icon_arrow_right_20.svg'
 import { PKText } from '../components'
 import { menuItems } from '../navigation/menuItems'
+import { useAppNavigation } from '../navigation/useAppNavigation'
 import { useAlertStore } from '../stores/alertStore'
 
 export function MenuTabPanel() {
+  const navigation = useAppNavigation()
   const showAlert = useAlertStore((state) => state.showAlert)
+
+  const handleMenuClick = (label: string, activity?: string) => {
+    if (activity === 'setting') {
+      navigation.navigate('setting', {})
+      return
+    }
+
+    showAlert({
+      title: '준비 중',
+      contents: `${label}(${activity}) 화면은 메뉴 이식 단계에서 연결합니다.`,
+    })
+  }
 
   return (
     <section className={classes.panel}>
@@ -12,12 +26,7 @@ export function MenuTabPanel() {
         <button
           className={classes.item}
           key={menu.label}
-          onClick={() =>
-            showAlert({
-              title: '준비 중',
-              contents: `${menu.label}(${menu.activity}) 화면은 메뉴 이식 단계에서 연결합니다.`,
-            })
-          }
+          onClick={() => handleMenuClick(menu.label, menu.activity)}
           type="button"
         >
           <span className={classes.itemMain}>

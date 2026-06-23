@@ -1,26 +1,103 @@
 import type { ActivityComponentType } from '@stackflow/react'
-import { AppContainer, AppHeader, PKText } from '../components'
+import {
+  AppContainer,
+  AppHeader,
+} from '../components'
 import { useAppNavigation } from '../navigation/useAppNavigation'
+import type { SettlementListItem } from '../types/settlement'
+import { SettlementCalendarHeaderButton } from './SettlementCalendarHeaderButton'
+import { SettlementHistoryFilterModal } from './SettlementHistoryFilterModal'
+import { SettlementHistoryList } from './SettlementHistoryList'
+import { SettlementHistorySummary } from './SettlementHistorySummary'
+import { SettlementSummarySheet } from './SettlementSummarySheet'
+import { useSettlementHistoryData } from './useSettlementHistoryData'
 
-export const SettlementHistoryActivity: ActivityComponentType<'settlementHistory'> = () => {
-  const navigation = useAppNavigation()
+export const SettlementHistoryActivity: ActivityComponentType<'settlementHistory'> =
+  () => {
+    const navigation = useAppNavigation()
+    const {
+      settlementPeriod,
+      sort,
+      currentParams,
+      summaryReloadSignal,
+      settlementList,
+      listLoading,
+      loadingMore,
+      totalCount,
+      openFilter,
+      modalFilter,
+      handleSortChange,
+      handleRefresh,
+      handleListScroll,
+      openFilterModal,
+      closeFilterModal,
+      updateModalFilter,
+      handleRangeOptionChange,
+      handleApplyFilter,
+    } = useSettlementHistoryData()
 
-  return (
-    <AppContainer
-      className={classes.screen}
-      contentClassName={classes.content}
-      topChildren={<AppHeader onBack={navigation.goBack} title="정산 현황" />}
-    >
-      <section className={classes.panel}>
-        <PKText as="p">정산 현황 shell입니다. 필터와 목록은 이후 단계에서 이식합니다.</PKText>
-      </section>
-    </AppContainer>
-  )
-}
+    const handleItemClick = (item: SettlementListItem) => {
+      if (!item.id) return
 
-const classes = {
-  screen: 'bg-[#f6f7f9] text-[var(--pk-text)]',
-  content: 'p-5',
-  panel:
-    'rounded-lg border border-[var(--pk-border)] bg-white p-5 [&_.pk-text]:m-0 [&_.pk-text]:text-sm [&_.pk-text]:leading-[1.55] [&_.pk-text]:text-[#575e6b]',
+      navigation.navigate('invoice', {
+        id: item.id,
+        from: 'settlementHistory',
+      })
+    }
+
+    return (
+      <div className={activityClasses.root}>
+        <AppContainer
+          className={activityClasses.screen}
+          contentClassName={activityClasses.content}
+          useScrollView={false}
+          topChildren={
+            <AppHeader
+              onBack={navigation.goBack}
+              right={<SettlementCalendarHeaderButton />}
+              title="정산 현황"
+            />
+          }
+        >
+          <SettlementHistorySummary
+            listLoading={listLoading}
+            loadingMore={loadingMore}
+            onOpenFilter={openFilterModal}
+            onRefresh={handleRefresh}
+            onSortChange={handleSortChange}
+            settlementPeriod={settlementPeriod}
+            sort={sort}
+            totalCount={totalCount}
+          />
+
+          <SettlementHistoryList
+            items={settlementList}
+            listLoading={listLoading}
+            loadingMore={loadingMore}
+            onItemClick={handleItemClick}
+            onScroll={handleListScroll}
+          />
+
+          <SettlementHistoryFilterModal
+            modalFilter={modalFilter}
+            onApply={handleApplyFilter}
+            onClose={closeFilterModal}
+            onRangeOptionChange={handleRangeOptionChange}
+            onUpdateFilter={updateModalFilter}
+            visible={openFilter}
+          />
+        </AppContainer>
+
+        <SettlementSummarySheet
+          reloadSignal={summaryReloadSignal}
+          searchParams={currentParams}
+        />
+      </div>
+    )
+  }
+
+const activityClasses = {
+  root: 'relative flex h-full min-h-0 flex-col overflow-hidden bg-white',
+  screen: 'min-h-0 flex-1 bg-white text-[var(--pk-text)]',
+  content: 'flex min-h-0 flex-1 flex-col bg-white px-5 pb-0 pt-[15px]',
 }

@@ -19,6 +19,16 @@ type PKButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   textClassName?: string
 }
 
+type ResolvedColorType = Exclude<ColorType, 'standard'>
+
+function resolveColorType(colorType: ColorType): ResolvedColorType {
+  return colorType === 'standard' ? 'primary' : colorType
+}
+
+function isSolidColorType(colorType: ResolvedColorType) {
+  return colorType === 'solid-primary' || colorType === 'solid-red'
+}
+
 export function PKButton({
   title,
   children,
@@ -32,6 +42,9 @@ export function PKButton({
   type = 'button',
   ...props
 }: PKButtonProps) {
+  const isDisabled = Boolean(disabled || loading)
+  const resolvedColorType = resolveColorType(colorType)
+  const usesFillColor = buttonType === 'standard' || buttonType === 'rounded'
   const labelClassName =
     buttonType === 'text'
       ? [classes.textLabel, textClassName].filter(Boolean).join(' ')
@@ -42,21 +55,35 @@ export function PKButton({
       className={[
         classes.base,
         classes.type[buttonType],
-        buttonType !== 'text' && buttonType !== 'outline' && classes.color[colorType],
+        usesFillColor && classes.fillColor[resolvedColorType],
+        usesFillColor && classes.disabledFill,
+        buttonType === 'outline' && classes.outlineColors,
+        buttonType === 'outline' && isDisabled && classes.outlineDisabled,
+        buttonType === 'text' && classes.textColors,
         className,
       ]
         .filter(Boolean)
         .join(' ')}
-      disabled={disabled || loading}
+      disabled={isDisabled}
       type={type}
       {...props}
     >
       {loading ? (
-        <LoaderCircle className={classes.loader} size={18} />
+        <LoaderCircle
+          className={[
+            classes.loader,
+            usesFillColor && isSolidColorType(resolvedColorType)
+              ? classes.loaderOnSolid
+              : classes.loaderDefault,
+          ]
+            .filter(Boolean)
+            .join(' ')}
+          size={18}
+        />
       ) : (
         <>
-          {icon && <span>{icon}</span>}
           <span className={labelClassName}>{title ?? children}</span>
+          {icon ? <span>{icon}</span> : null}
         </>
       )}
     </button>
@@ -65,26 +92,29 @@ export function PKButton({
 
 const classes = {
   base:
-    'inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border-0 p-0 font-[var(--pk-font-scd)] text-[var(--pk-muted)] touch-manipulation select-none disabled:cursor-default',
+    'inline-flex cursor-pointer items-center justify-center gap-2 border-0 p-0 font-[var(--pk-font-scd)] touch-manipulation select-none disabled:cursor-default',
   type: {
-    text: 'h-6 min-h-6 bg-transparent text-xs leading-none text-[var(--pk-muted)] disabled:bg-transparent disabled:text-[var(--pk-muted)]',
-    standard:
-      'h-[50px] w-full min-w-0 rounded-2xl px-4 disabled:bg-[var(--pk-border)] disabled:text-[var(--pk-muted)]',
-    rounded:
-      'h-14 w-full min-w-0 rounded-[28px] px-4 disabled:bg-[var(--pk-border)] disabled:text-[var(--pk-muted)]',
+    text: 'h-6 min-h-6 rounded-xl bg-transparent px-0',
+    standard: 'h-[50px] w-full min-w-0 rounded-2xl px-4',
+    rounded: 'h-14 w-full min-w-0 rounded-[28px] px-4',
     outline:
-      'h-14 w-full min-w-0 rounded-[28px] border border-[var(--pk-primary)] bg-white px-4 disabled:border-[var(--pk-border)] disabled:bg-white disabled:text-[var(--pk-muted)]',
+      'h-14 w-full min-w-0 rounded-[28px] border bg-white px-4 disabled:bg-white',
   },
-  color: {
-    primary: 'bg-[#dbe8ff] text-[var(--pk-primary)]',
-    warning: 'bg-[#fedbdb] text-[var(--pk-danger)]',
-    'solid-primary': 'bg-[var(--pk-primary)] text-white',
-    'solid-red': 'bg-[var(--pk-danger)] text-white',
-    disable: 'bg-[var(--pk-border)] text-[var(--pk-muted)]',
-    standard: '',
+  fillColor: {
+    primary: 'bg-[#dbe8ff] text-[#145ed9]',
+    warning: 'bg-[#fedbdb] text-[#e22c17]',
+    'solid-primary': 'bg-[#145ed9] text-white',
+    'solid-red': 'bg-[#e22c17] text-white',
+    disable: 'bg-[#e7e9ee] text-[#8b9099]',
   },
-  label: 'overflow-hidden text-ellipsis whitespace-nowrap text-base font-semibold text-inherit',
+  disabledFill: 'disabled:!bg-[#e7e9ee] disabled:!text-[#8b9099]',
+  outlineColors: 'border-[#145ed9] text-[#145ed9]',
+  outlineDisabled: 'disabled:border-[#e7e9ee] disabled:text-[#8b9099]',
+  textColors: 'text-[#8b9099]',
+  label: 'overflow-hidden text-ellipsis whitespace-nowrap text-base font-semibold leading-none text-inherit',
   textLabel:
-    'overflow-hidden text-ellipsis whitespace-nowrap text-xs font-extralight leading-3 text-inherit',
+    'overflow-hidden text-ellipsis whitespace-nowrap text-xs font-normal leading-3 text-inherit',
   loader: 'animate-spin',
+  loaderOnSolid: 'text-white',
+  loaderDefault: 'text-[#145ed9]',
 }

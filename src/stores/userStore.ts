@@ -8,6 +8,24 @@ export type PaykingUser = {
   name?: string
   agentId?: number
   authority?: string
+  lastAuthId?: string
+  [key: string]: unknown
+}
+
+export type PaykingAgent = {
+  id?: number
+  name?: string
+  agentType?: string
+  withStore?: boolean
+  submitDocs?: {
+    isCultTax?: boolean
+    [key: string]: unknown
+  }
+  [key: string]: unknown
+}
+
+export type PaykingUserAuthes = {
+  isPayCancel?: boolean
   [key: string]: unknown
 }
 
@@ -26,6 +44,8 @@ export type AgentSettlementInfo = {
 
 type UserState = {
   user: PaykingUser | null
+  agent: PaykingAgent | null
+  authes: PaykingUserAuthes | null
   guaranteeInsurances: GuaranteeInsurances | null
   agentSettlementInfo: AgentSettlementInfo | null
   loading: boolean
@@ -44,6 +64,8 @@ function getApiData<T>(response: { data?: unknown }): T | null {
 
 export const useUserStore = create<UserState>((set) => ({
   user: null,
+  agent: null,
+  authes: null,
   guaranteeInsurances: null,
   agentSettlementInfo: null,
   loading: false,
@@ -54,20 +76,38 @@ export const useUserStore = create<UserState>((set) => ({
       const userResponse = await userService.getMyInfo({})
       const user = getApiData<PaykingUser>(userResponse)
 
-      set({ user })
+      let authes: PaykingUserAuthes | null = null
+
+      if (user?.userNo && user.authority !== 'MANAGE') {
+        try {
+          const authResponse = await userService.getAuth(user.userNo)
+          authes = getApiData<PaykingUserAuthes>(authResponse)
+        } catch (error) {
+          console.warn('사용자 권한 조회 실패:', error)
+        }
+      }
+
+      set({ user, authes })
 
       if (user?.agentId) {
-        const [guaranteeResponse, settlementResponse] = await Promise.all([
-          agentService.getAgentGuaranteeInsurances(user.agentId),
-          agentService.getAgentSettlementInfo(user.agentId),
-        ])
+        const [agentResponse, guaranteeResponse, settlementResponse] =
+          await Promise.all([
+            agentService.getAgent(user.agentId),
+            agentService.getAgentGuaranteeInsurances(user.agentId),
+            agentService.getAgentSettlementInfo(user.agentId),
+          ])
 
         set({
+          agent: getApiData<PaykingAgent>(agentResponse),
           guaranteeInsurances: getApiData<GuaranteeInsurances>(guaranteeResponse),
           agentSettlementInfo: getApiData<AgentSettlementInfo>(settlementResponse),
         })
       } else {
-        set({ guaranteeInsurances: null, agentSettlementInfo: null })
+        set({
+          agent: null,
+          guaranteeInsurances: null,
+          agentSettlementInfo: null,
+        })
       }
     } catch (error) {
       console.warn('홈 사용자 정보 조회 실패:', error)
@@ -78,6 +118,8 @@ export const useUserStore = create<UserState>((set) => ({
   reset: () => {
     set({
       user: null,
+      agent: null,
+      authes: null,
       guaranteeInsurances: null,
       agentSettlementInfo: null,
       loading: false,
