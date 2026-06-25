@@ -54,7 +54,13 @@ export function useSettlementHistoryData() {
       params: ReturnType<typeof getSettlementHistoryParams>,
       options: { append?: boolean } = {},
     ) => {
-      if (!params || loadingRef.current) return
+      if (!params) {
+        setListLoading(false)
+        setLoadingMore(false)
+        return
+      }
+
+      if (loadingRef.current) return
 
       loadingRef.current = true
       setListLoading(!options.append)
