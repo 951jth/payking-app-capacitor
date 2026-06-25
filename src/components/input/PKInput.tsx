@@ -1,6 +1,7 @@
 import type { InputHTMLAttributes, ReactNode } from 'react'
 import { useMemo, useState } from 'react'
 import { Eye, EyeOff } from 'lucide-react'
+import { pressableClassName } from '../../utils/pressable'
 
 type PKInputType =
   | 'text'
@@ -151,5 +152,5 @@ const classes = {
   control:
     'h-full min-w-0 flex-1 border-0 bg-transparent p-0 font-[var(--pk-font-ptd)] text-sm font-medium text-[#1e1e1e] outline-none placeholder:text-[#cad0da]',
   iconButton:
-    'inline-flex h-8 w-8 items-center justify-center border-0 bg-transparent text-[#99a2b0]',
+    `inline-flex h-8 w-8 items-center justify-center border-0 bg-transparent text-[#99a2b0] ${pressableClassName}`,
 }

@@ -1,12 +1,17 @@
-import { PKBanner, type PKBannerItem } from '../../components'
+import { PKBanner, PKBannerSkeleton, type PKBannerItem } from '../../components'
 import { useAlertStore } from '../../stores/alertStore'
 
 type HomeBannerSectionProps = {
   banners: PKBannerItem[]
+  loading?: boolean
 }
 
-export function HomeBannerSection({ banners }: HomeBannerSectionProps) {
+export function HomeBannerSection({ banners, loading = false }: HomeBannerSectionProps) {
   const showAlert = useAlertStore((state) => state.showAlert)
+
+  if (loading) {
+    return <PKBannerSkeleton className={classes.banner} />
+  }
 
   if (banners.length === 0) return null
 

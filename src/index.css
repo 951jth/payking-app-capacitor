@@ -12,6 +12,7 @@
     "Segoe UI", sans-serif;
   --pk-font-ptd: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
+  --pk-press-opacity: 0.2;
 
   color: var(--pk-text);
   background: var(--pk-bg);
@@ -28,6 +29,21 @@ body {
 
 #root {
   min-height: 100svh;
+}
+
+@layer base {
+  button:not(:disabled):not([data-no-press]),
+  [role="button"]:not([aria-disabled="true"]):not([data-no-press]),
+  [data-pressable]:not([aria-disabled="true"]):not([data-no-press]) {
+    transition: opacity 120ms ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:not(:disabled):not([data-no-press]):active,
+  [role="button"]:not([aria-disabled="true"]):not([data-no-press]):active,
+  [data-pressable]:not([aria-disabled="true"]):not([data-no-press]):active {
+    opacity: var(--pk-press-opacity);
+  }
 }
 
 @keyframes pk-fade-in {

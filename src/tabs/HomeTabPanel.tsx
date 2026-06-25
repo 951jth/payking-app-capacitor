@@ -23,6 +23,7 @@ export function HomeTabPanel() {
     noticeUnreadCount,
     todayAmount,
     banners,
+    bannersLoading,
   } = useHomeTabData()
 
   useEffect(() => {
@@ -68,7 +69,7 @@ export function HomeTabPanel() {
           todayAmount={todayAmount}
         />
         <HomeActionCardsSection />
-        <HomeBannerSection banners={banners} />
+        <HomeBannerSection banners={banners} loading={bannersLoading} />
         <HomeGuideButtonsSection />
         <HomeFaqSection />
       </div>

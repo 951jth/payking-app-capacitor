@@ -26,6 +26,7 @@ export function useHomeTabData() {
   const [noticeUnreadCount, setNoticeUnreadCount] = useState(0)
   const [todayAmount, setTodayAmount] = useState(0)
   const [banners, setBanners] = useState<PKBannerItem[]>([])
+  const [bannersLoading, setBannersLoading] = useState(false)
 
   useEffect(() => {
     if (!accessToken) return
@@ -34,9 +35,14 @@ export function useHomeTabData() {
   }, [accessToken, loadHomeUserData])
 
   useEffect(() => {
-    if (!accessToken) return
+    if (!accessToken) {
+      setBanners([])
+      setBannersLoading(false)
+      return
+    }
 
     let ignore = false
+    setBannersLoading(true)
 
     void mainBannerService
       .getBanners({
@@ -55,6 +61,11 @@ export function useHomeTabData() {
       .catch((error) => {
         if (!ignore) {
           console.warn('홈 배너 조회 실패:', error)
+        }
+      })
+      .finally(() => {
+        if (!ignore) {
+          setBannersLoading(false)
         }
       })
 
@@ -108,5 +119,6 @@ export function useHomeTabData() {
     noticeUnreadCount,
     todayAmount,
     banners,
+    bannersLoading,
   }
 }

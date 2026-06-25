@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react'
 import { LoaderCircle } from 'lucide-react'
+import { pressableClassName } from '../../utils/pressable'
 
 type ButtonType = 'text' | 'standard' | 'rounded' | 'outline'
 type ColorType =
@@ -91,8 +92,7 @@ export function PKButton({
 }
 
 const classes = {
-  base:
-    'inline-flex cursor-pointer items-center justify-center gap-2 border-0 p-0 font-[var(--pk-font-scd)] touch-manipulation select-none disabled:cursor-default',
+  base: `inline-flex items-center justify-center gap-2 border-0 p-0 font-[var(--pk-font-scd)] select-none disabled:cursor-default ${pressableClassName}`,
   type: {
     text: 'h-6 min-h-6 rounded-xl bg-transparent px-0',
     standard: 'h-[50px] w-full min-w-0 rounded-2xl px-4',

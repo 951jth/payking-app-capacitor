@@ -8,14 +8,18 @@ type ListPlaceholderProps = {
 }
 
 export function ListPlaceholder({ message, muted, compact }: ListPlaceholderProps) {
+  if (muted) {
+    return (
+      <PKText as="p" className={classes.empty} weight={200}>
+        {message}
+      </PKText>
+    )
+  }
+
   return (
     <div className={compact ? classes.loadingMore : classes.loadingBox}>
       <LoaderCircle className={classes.spinnerMuted} size={compact ? 18 : 24} />
-      <PKText
-        as="p"
-        className={muted ? classes.empty : classes.loadingText}
-        weight={200}
-      >
+      <PKText as="p" className={classes.loadingText} weight={200}>
         {message}
       </PKText>
     </div>

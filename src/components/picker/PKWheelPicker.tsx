@@ -1,5 +1,5 @@
 import type { CSSProperties } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { PKText } from '../typography/PKText'
 
 export type PKWheelPickerOption<Value extends string | number = string | number> = {
@@ -25,26 +25,27 @@ export function PKWheelPicker<Value extends string | number = string | number>({
   selectedOverlayStyle,
 }: PKWheelPickerProps<Value>) {
   const listRef = useRef<HTMLDivElement | null>(null)
-  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [internalSelectedIndex, setInternalSelectedIndex] = useState(0)
   const lastYRef = useRef(0)
   const settleTimerRef = useRef<number | null>(null)
   const lastCommittedIndexRef = useRef<number | null>(null)
+  const valueIndex = useMemo(
+    () => options.findIndex((option) => option.value === value),
+    [options, value],
+  )
+  const selectedIndex = valueIndex >= 0 ? valueIndex : internalSelectedIndex
 
   useEffect(() => {
-    if (!options.length) return
+    if (valueIndex < 0) return
 
-    const index = options.findIndex((option) => option.value === value)
-    if (index < 0) return
-
-    setSelectedIndex(index)
-    lastCommittedIndexRef.current = index
+    lastCommittedIndexRef.current = valueIndex
     requestAnimationFrame(() => {
       listRef.current?.scrollTo({
-        top: index * WHEEL_HEIGHT,
+        top: valueIndex * WHEEL_HEIGHT,
         behavior: 'auto',
       })
     })
-  }, [options, value])
+  }, [valueIndex])
 
   useEffect(() => {
     return () => {
@@ -65,7 +66,7 @@ export function PKWheelPicker<Value extends string | number = string | number>({
       behavior: 'auto',
     })
 
-    setSelectedIndex(clamped)
+    setInternalSelectedIndex(clamped)
 
     if (lastCommittedIndexRef.current !== clamped) {
       lastCommittedIndexRef.current = clamped
@@ -90,7 +91,7 @@ export function PKWheelPicker<Value extends string | number = string | number>({
   }
 
   const handleItemPress = (index: number) => {
-    setSelectedIndex(index)
+    setInternalSelectedIndex(index)
     listRef.current?.scrollTo({
       top: index * WHEEL_HEIGHT,
       behavior: 'smooth',

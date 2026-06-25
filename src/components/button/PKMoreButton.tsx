@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes } from 'react'
 import iconArrowRight from '../../assets/icons/Icon_arrow_right_16.svg'
+import { pressableClassName } from '../../utils/pressable'
 import { PKText } from '../typography/PKText'
 
 type PKMoreButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -33,8 +34,7 @@ export function PKMoreButton({
 }
 
 const classes = {
-  button:
-    'flex cursor-pointer items-center justify-center gap-0 border-0 bg-transparent p-2 font-[var(--pk-font-scd)] touch-manipulation select-none disabled:cursor-default',
+  button: `flex items-center justify-center gap-0 border-0 bg-transparent p-2 font-[var(--pk-font-scd)] disabled:cursor-default ${pressableClassName}`,
   label: 'text-xs text-[var(--pk-text)]',
   iconSm: 'block h-4 w-4',
   iconLg: 'block h-[21px] w-[21px]',

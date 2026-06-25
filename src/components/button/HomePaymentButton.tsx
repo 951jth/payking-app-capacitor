@@ -1,4 +1,5 @@
 import homePaymentImage from '../../assets/images/Img_home_payment.svg'
+import { pressableClassName } from '../../utils/pressable'
 import { PKText } from '../typography/PKText'
 
 type HomePaymentButtonProps = {
@@ -23,8 +24,7 @@ export function HomePaymentButton({ onClick, disabled = false }: HomePaymentButt
 }
 
 const classes = {
-  button:
-    '@container flex h-full w-full cursor-pointer flex-col items-center justify-between gap-6 overflow-hidden rounded-[10px] border-0 bg-[var(--pk-primary)] pt-6 disabled:cursor-default disabled:opacity-60',
+  button: `@container flex h-full w-full flex-col items-center justify-between gap-6 overflow-hidden rounded-[10px] border-0 bg-[var(--pk-primary)] pt-6 disabled:cursor-default disabled:opacity-60 ${pressableClassName}`,
   label: 'text-[clamp(20px,10cqi,28px)] leading-[1.1] text-white',
   image: 'min-h-0 w-full flex-1 object-contain object-bottom',
 }

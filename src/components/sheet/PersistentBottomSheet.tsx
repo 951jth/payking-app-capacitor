@@ -40,6 +40,8 @@ export function PersistentBottomSheet({
   } | null>(null)
   const [sheetHeight, setSheetHeight] = useState(0)
   const [dragTranslateY, setDragTranslateY] = useState<number | null>(null)
+  const [canAnimateTransform, setCanAnimateTransform] = useState(false)
+  const [hasEntered, setHasEntered] = useState(false)
 
   useEffect(() => {
     const element = sheetRef.current
@@ -54,6 +56,23 @@ export function PersistentBottomSheet({
     return () => observer.disconnect()
   }, [])
 
+  useEffect(() => {
+    if (sheetHeight <= collapsedHeight || hasEntered) return
+
+    let enterFrameId = 0
+    const enableTransitionFrameId = requestAnimationFrame(() => {
+      setCanAnimateTransform(true)
+      enterFrameId = requestAnimationFrame(() => {
+        setHasEntered(true)
+      })
+    })
+
+    return () => {
+      cancelAnimationFrame(enableTransitionFrameId)
+      if (enterFrameId) cancelAnimationFrame(enterFrameId)
+    }
+  }, [collapsedHeight, hasEntered, sheetHeight])
+
   const positions = useMemo(() => {
     const height = sheetHeight || collapsedHeight
     const collapsed = Math.max(height - collapsedHeight, 0)
@@ -66,6 +85,15 @@ export function PersistentBottomSheet({
   }, [collapsedHeight, sheetHeight])
 
   const translateY = dragTranslateY ?? positions[state]
+  const isMeasured = sheetHeight > collapsedHeight
+  const transformTranslateY =
+    dragTranslateY != null
+      ? `${translateY}px`
+      : !isMeasured
+        ? '100%'
+        : !hasEntered
+          ? `${positions.hidden}px`
+          : `${translateY}px`
 
   const getNearestState = (value: number, velocityDirection: 'up' | 'down' | 'none') => {
     if (velocityDirection === 'up' && value < positions.collapsed - DRAG_THRESHOLD) {
@@ -136,8 +164,11 @@ export function PersistentBottomSheet({
       ref={sheetRef}
       style={{
         height: maxHeight,
-        transform: `translate3d(0, ${translateY}px, 0)`,
-        transition: dragTranslateY == null ? 'transform 260ms ease' : 'none',
+        transform: `translate3d(0, ${transformTranslateY}, 0)`,
+        transition:
+          dragTranslateY == null && canAnimateTransform
+            ? 'transform 260ms ease'
+            : 'none',
       }}
     >
       <div

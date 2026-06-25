@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import iconArrowLeft from '../../assets/icons/Icon_arrow_left.svg'
 import iconClose from '../../assets/icons/Icon_close_black_20.svg'
+import { pressableClassName } from '../../utils/pressable'
 import { PKText } from '../typography/PKText'
 
 type AppHeaderProps = {
@@ -64,7 +65,7 @@ const classes = {
   title:
     'm-0 max-w-full overflow-hidden text-ellipsis whitespace-nowrap text-center text-[16px] leading-[1.2] text-[#191919]',
   iconButton:
-    'inline-flex h-14 w-14 cursor-pointer items-center justify-center border-0 bg-transparent p-0 touch-manipulation select-none disabled:cursor-default',
+    `inline-flex h-14 w-14 items-center justify-center border-0 bg-transparent p-0 select-none disabled:cursor-default ${pressableClassName}`,
   backIcon: 'block h-4 w-[10px]',
   closeIcon: 'block h-5 w-5',
 }

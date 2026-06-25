@@ -18,6 +18,30 @@ type PKBannerProps = {
   onPressItem?: (index: number, item: PKBannerItem) => void
 }
 
+type PKBannerSkeletonProps = {
+  height?: number
+  className?: string
+}
+
+export function PKBannerSkeleton({
+  height = 70,
+  className,
+}: PKBannerSkeletonProps) {
+  return (
+    <div
+      aria-busy="true"
+      aria-label="배너 불러오는 중"
+      className={[classes.wrapper, classes.skeleton, className]
+        .filter(Boolean)
+        .join(' ')}
+      style={{ height }}
+    >
+      <div className={classes.skeletonShimmer} />
+      <div aria-hidden className={classes.skeletonIndicator} />
+    </div>
+  )
+}
+
 export function PKBanner({
   items = [],
   height = 70,
@@ -108,4 +132,8 @@ const classes = {
     'text-[10px] leading-none text-white',
   indicatorTotal:
     'text-[10px] leading-none text-white',
+  skeleton: 'bg-[#eceef2]',
+  skeletonShimmer: 'h-full w-full animate-pulse rounded-xl bg-[#dfe3ea]',
+  skeletonIndicator:
+    'absolute bottom-2 right-4 h-5 w-[50px] rounded-[13px] bg-[#d5dae3] animate-pulse',
 }
