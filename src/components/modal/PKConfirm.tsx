@@ -1,5 +1,7 @@
 import * as AlertDialog from '@radix-ui/react-alert-dialog'
 import type { ReactNode } from 'react'
+import { useCallback } from 'react'
+import { useBackOverlay } from '../../hooks/useBackOverlay'
 import { PKButton } from '../button/PKButton'
 import { PKText } from '../typography/PKText'
 
@@ -30,6 +32,13 @@ export function PKConfirm({
   onConfirm,
   onOpenChange,
 }: PKConfirmProps) {
+  const handleDismiss = useCallback(() => {
+    onReject?.()
+    onOpenChange?.(false)
+  }, [onOpenChange, onReject])
+
+  useBackOverlay(visible, handleDismiss)
+
   return (
     <AlertDialog.Root open={visible} onOpenChange={onOpenChange}>
       <AlertDialog.Portal>

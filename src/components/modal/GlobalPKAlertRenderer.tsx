@@ -10,8 +10,8 @@ export function GlobalPKAlertRenderer() {
   const hideAlert = useAlertStore((state) => state.hideAlert)
 
   const handleConfirm = () => {
-    onConfirm?.()
     hideAlert()
+    onConfirm?.()
   }
 
   return (

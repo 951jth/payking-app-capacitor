@@ -1,6 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog'
 import type { PropsWithChildren } from 'react'
-import { useEffect, useState } from 'react'
+import { useBackOverlay } from '../../hooks/useBackOverlay'
 import { PKText } from '../typography/PKText'
 
 type BottomModalProps = PropsWithChildren<{
@@ -17,11 +17,9 @@ export function BottomModal({
   children,
   useScrollView = true,
 }: BottomModalProps) {
-  const [portalContainer, setPortalContainer] = useState<HTMLElement | null>(null)
+  const portalContainer = document.querySelector<HTMLElement>('.pk-modal-root')
 
-  useEffect(() => {
-    setPortalContainer(document.querySelector<HTMLElement>('.pk-modal-root'))
-  }, [])
+  useBackOverlay(visible, onClose)
 
   return (
     <Dialog.Root open={visible} onOpenChange={(open) => !open && onClose?.()}>

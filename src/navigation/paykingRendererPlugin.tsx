@@ -1,5 +1,6 @@
 import type { StackflowReactPlugin } from '@stackflow/react'
 import { AuthRouteGuard } from './AuthRouteGuard'
+import { NavigationBackHandler } from './NavigationBackHandler'
 
 export function paykingRendererPlugin(): StackflowReactPlugin {
   return () => ({
@@ -15,6 +16,7 @@ export function paykingRendererPlugin(): StackflowReactPlugin {
             <AuthRouteGuard
               topActivityName={activities.find((activity) => activity.isTop)?.name}
             />
+            <NavigationBackHandler />
             {activities.map((activity, index) => (
               <div
                 className="pk-activity"
