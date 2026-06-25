@@ -48,7 +48,7 @@ export const LoginActivity: ActivityComponentType<"login"> = () => {
       }
 
       setAccessToken(token);
-      navigation.replace("homeMain", {});
+      navigation.replace('mainTab', {});
     } catch (error) {
       showAlert({
         title: "로그인 실패",

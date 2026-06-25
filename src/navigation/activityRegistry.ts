@@ -1,16 +1,13 @@
 import { CancelRequestActivity } from '../activities/CancelRequestActivity'
 import { FindIdActivity } from '../activities/FindIdActivity'
 import { FindPwActivity } from '../activities/FindPwActivity'
-import { HomeMainActivity } from '../activities/HomeMainActivity'
+import { MainTabActivity } from '../activities/MainTabActivity'
 import { InvoiceActivity } from '../activities/InvoiceActivity'
 import { LinkPaymentActivity } from '../activities/LinkPaymentActivity'
 import { LoginActivity } from '../activities/LoginActivity'
 import { PaymentHistoryActivity } from '../activities/PaymentHistoryActivity'
-import { SampleDetailActivity } from '../activities/SampleDetailActivity'
-import { SampleHomeActivity } from '../activities/SampleHomeActivity'
 import { SettingActivity } from '../activities/SettingActivity'
 import { SettlementHistoryActivity } from '../activities/SettlementHistoryActivity'
-import { UserHomeActivity } from '../activities/UserHomeActivity'
 
 export const initialActivity = 'login'
 
@@ -37,8 +34,8 @@ export const activityDefinitions = [
     guestOnly: true,
   },
   {
-    name: 'homeMain',
-    title: '홈',
+    name: 'mainTab',
+    title: '메인 탭',
     headerShown: false,
     auth: true,
   },
@@ -78,40 +75,19 @@ export const activityDefinitions = [
     headerShown: true,
     auth: true,
   },
-  {
-    name: 'userHome',
-    title: '홈',
-    headerShown: false,
-    auth: true,
-  },
-  {
-    name: 'sampleHome',
-    title: 'PayKing',
-    headerShown: false,
-    auth: false,
-  },
-  {
-    name: 'sampleDetail',
-    title: '샘플 상세',
-    headerShown: true,
-    auth: true,
-  },
 ] as const
 
 export const activityComponents = {
   login: LoginActivity,
   findId: FindIdActivity,
   findPw: FindPwActivity,
-  homeMain: HomeMainActivity,
+  mainTab: MainTabActivity,
   paymentHistory: PaymentHistoryActivity,
   invoice: InvoiceActivity,
   cancelRequest: CancelRequestActivity,
   settlementHistory: SettlementHistoryActivity,
   linkPayment: LinkPaymentActivity,
   setting: SettingActivity,
-  userHome: UserHomeActivity,
-  sampleHome: SampleHomeActivity,
-  sampleDetail: SampleDetailActivity,
 }
 
 export type ActivityName = (typeof activityDefinitions)[number]['name']

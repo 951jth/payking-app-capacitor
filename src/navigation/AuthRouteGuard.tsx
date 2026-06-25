@@ -24,7 +24,7 @@ export function AuthRouteGuard({ topActivityName }: AuthRouteGuardProps) {
     }
 
     if ('guestOnly' in meta && meta.guestOnly && accessToken) {
-      flow.replace('homeMain', {}, { animate: false })
+      flow.replace('mainTab', {}, { animate: false })
     }
   }, [accessToken, flow, hydrated, topActivityName])
 
