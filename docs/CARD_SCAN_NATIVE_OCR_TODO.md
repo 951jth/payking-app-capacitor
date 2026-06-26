@@ -207,15 +207,23 @@ PaykingOcr.onPaymentsError({
 
 ### 1. Capacitor plugin 네이티브 스켈레톤
 
-- Android `PaykingOcrPlugin` 추가
-  - 예상 위치: `android/app/src/main/java/kr/co/payking/web/ocr/PaykingOcrPlugin.kt`
+- Android Kotlin 도입 완료
+  - 원본 `payking-app`과 동일하게 Kotlin Gradle Plugin `2.0.21`을 사용한다.
+  - `android/build.gradle`: `org.jetbrains.kotlin:kotlin-gradle-plugin`
+  - `android/app/build.gradle`: `apply plugin: 'org.jetbrains.kotlin.android'`
+- Android `PaykingOcrPlugin` 추가 완료
+  - 현재 위치: `android/app/src/main/java/kr/co/payking/web/ocr/PaykingOcrPlugin.kt`
   - `@CapacitorPlugin(name = "PaykingOcr")`
   - `presentOCRView`
   - `onPaymentsSuccess`
   - `onPaymentsError`
-  - `notifyListeners("onPayment", data)`
-- Android `MainActivity.java`에 plugin 등록 방식 확인
-  - Capacitor 8 기준 등록 방식 확인 후 적용
+  - `notifyListeners("onPayment", data)`로 이어지는 `emitOnPayment(...)` 헬퍼
+- Android `MainActivity.kt`에 plugin 등록 완료
+  - 현재 위치는 `android/app/src/main/java/kr/co/payking/web/MainActivity.kt`
+  - `registerPlugin(PaykingOcrPlugin::class.java)`
+  - Capacitor 8 `BridgeActivity` 기준으로 `super.onCreate` 전에 등록한다.
+- 현재 `presentOCRView`는 OCR Activity 포팅 전이라 `Android OCR screen is not implemented yet.` 오류를 반환한다.
+  - 웹 `useCardScanOcrPayment`는 네이티브 메서드 오류를 alert로 표시하게 보강했다.
 - iOS `PaykingOcrPlugin.swift` 추가
   - 예상 위치: `ios/App/App/PaykingOcrPlugin.swift`
   - `CAPPlugin`
@@ -226,22 +234,46 @@ PaykingOcr.onPaymentsError({
 
 ### 2. Android OCR 화면 포팅
 
-- 원본 `OCRViewActivity.kt`를 Capacitor 앱 패키지로 이식
-  - `com.payking` 의존 제거
-  - React Native bridge 의존 제거
-  - `NativeEventEmitter.emitOnPayment`를 Capacitor plugin event로 교체
-- 원본 `CardInfoUpdateActivity.kt` 이식
-  - 직접입력 결제 이벤트를 Capacitor plugin event로 교체
-- `PaymentCallbackManager.kt` 이식
-  - `onPaymentsSuccess/Error`가 현재 활성 OCR/직접입력 화면에 전달되게 유지
-- `OcrParamsUtil.kt` 이식
-  - RN `ReadableMap` 관련 코드는 제거 또는 JSON/JSObject 기반으로 변경
-- Android layout/drawable/color/font 리소스 복사
-- `AndroidManifest.xml`에 OCR/직접입력 Activity 등록
-- Android `build.gradle` 의존성 추가
+- 원본 `OCRViewActivity.kt`를 Capacitor 앱 패키지로 1차 이식 완료
+  - 현재 위치: `android/app/src/main/java/kr/co/payking/web/ocr/OCRViewActivity.kt`
+  - package를 `kr.co.payking.web.ocr`로 변경
+  - React Native bridge import 제거
+  - `NativeEventEmitter.emitOnPayment`를 `PaykingOcrPlugin.emitOnPayment`로 교체
+- 원본 `CardInfoUpdateActivity.kt` 1차 이식 완료
+  - 현재 위치: `android/app/src/main/java/kr/co/payking/web/ocr/CardInfoUpdateActivity.kt`
+  - 직접입력 결제 이벤트를 `PaykingOcrPlugin.emitOnPayment`로 교체
+- `PaymentCallbackManager.kt` 이식 완료
+  - 현재 위치: `android/app/src/main/java/kr/co/payking/web/ocr/PaymentCallbackManager.kt`
+  - `PaykingOcrPlugin.onPaymentsSuccess/Error`가 현재 활성 OCR/직접입력 화면에 전달되게 연결
+- `OcrParamsUtil.kt` 이식 완료
+  - 현재 위치: `android/app/src/main/java/kr/co/payking/web/ocr/util/OcrParamsUtil.kt`
+  - RN `ReadableMap` 의존 제거
+  - Capacitor `PluginCall.data.toString()` JSON을 파싱하는 구조로 변경
+- Android layout/drawable/color/font 리소스 복사 완료
+  - layout: `activity_ocr.xml`, `activity_card_info.xml`, bottom sheet/dialog/grid/item layout
+  - drawable: OCR 화면 버튼/카드/다이얼로그 관련 XML drawable
+  - values: `color.xml` 추가 및 `strings.xml`, `styles.xml` 보강
+  - assets: `S-CoreDream-*.ttf`
+- `AndroidManifest.xml`에 OCR/직접입력 Activity 등록 완료
+- Android `build.gradle` 의존성 추가 완료
+  - `com.nhncloud.android:nhncloud-creditcard-recognizer:1.12.0`
+  - `androidx.constraintlayout:constraintlayout`
+  - `androidx.window:window`
+  - `androidx.recyclerview:recyclerview`
+  - `androidx.lifecycle:lifecycle-runtime-ktx`
+  - `com.google.android.material:material`
+  - `com.google.code.gson:gson`
+  - `com.github.bumptech.glide:glide`
+- 원본 bottom sheet style은 구형 `Theme.Design.*` 계열이었으나 현재 Material Components 의존성 기준으로 `Theme.MaterialComponents.*` 계열로 변경했다.
 - NHN OCR key 관리 방식 점검
   - 현재 원본은 source hardcoding 상태
   - 추후 환경별 native config로 분리 권장
+- AppGuard AAR 확인
+  - 원본 Android AAR 위치: `payking-app/android/app/libs/android/appguard-0.3.0.aar`
+  - 현재 이식된 Android OCR 코드에서는 AppGuard 클래스를 직접 import하지 않는다.
+  - 따라서 현재 단계에서는 AAR을 복사/의존성 추가하지 않았다.
+  - NHN OCR SDK 또는 운영 보안 정책에서 명시적으로 요구하면 `android/app/libs`로 복사 후 `implementation files('libs/appguard-0.3.0.aar')` 추가를 검토한다.
+- 아직 사용자가 요청하지 않아 Android Gradle 빌드는 실행하지 않았다.
 
 ### 3. iOS OCR 화면 포팅
 

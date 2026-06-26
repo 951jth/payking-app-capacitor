@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="20dp"
+    android:background="@drawable/bg_bottom_sheet_rounded"
+    android:gravity="center">
+
+
+    <View
+        android:layout_width="60dp"
+        android:layout_height="2dp"
+        android:background="@color/color_E7E9EE"
+        android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/info_update_installment_hint"
+        android:textSize="16sp"
+        android:textColor="@color/color_191919"
+        android:gravity="center"
+        android:paddingBottom="16dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_installment"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:overScrollMode="never"
+        android:clipToPadding="false"
+        android:paddingTop="60dp"
+        android:paddingBottom="60dp" />
+
+    <Button
+        android:id="@+id/btn_apply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/dialog_apply"
+        android:background="@drawable/rounded_button_blue_bg"
+        android:textColor="@color/color_145ED9"
+         />
+
+    <View
+        android:layout_width="122dp"
+        android:layout_height="5dp"
+        android:background="@drawable/rounded_line_black_bg"
+
+        android:layout_marginTop="20dp"
+        />
+
+</LinearLayout>

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "android:assembleDebug": "cd android && .\\gradlew.bat assembleDebug"
   },
   "dependencies": {
     "@capacitor-community/contacts": "^7.2.0",

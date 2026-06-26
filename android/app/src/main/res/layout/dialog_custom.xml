@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/dialog_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_dialog_rounded"
+    android:layout_gravity="center"
+    android:elevation="10dp"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
+    android:paddingBottom="16dp"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginBottom="24dp"
+        >
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="20sp"
+        android:textColor="@color/color_191919"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="@font/score_dream_5"
+        android:text="카드사 불일치"
+android:lineHeight="21sp"
+        />
+
+    <TextView
+        android:id="@+id/dialog_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="14sp"
+        android:textColor="@color/color_191919"
+        android:fontFamily="@font/score_dream_4_regular"
+        android:lineHeight="21sp"
+        android:text="선택한 카드사와 스캔된 카드사가 일치하지 않습니다. 카드사를 재확인 후 결제해주세요."
+         />
+
+        <TextView
+            android:id="@+id/dialog_sub_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textColor="@color/color_8B9099"
+            android:fontFamily="@font/score_dream_4_regular"
+            android:lineHeight="21sp"
+            android:text="선택한 카드사 : 신한카드\n스캔된 카드사 : 삼성카드"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <Button
+            android:id="@+id/btn_close"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:text="@string/dialog_close"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/color_8B9099"
+            android:background="@drawable/rounded_button_gray_bg"
+            android:fontFamily="@font/score_dream_6_bold"
+            android:lineHeight="21sp"
+            />
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:text="@string/dialog_confirm"
+            android:textColor="@color/color_145ED9"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:background="@drawable/rounded_button_blue_bg"
+            android:fontFamily="@font/score_dream_6_bold"
+            android:lineHeight="21sp"/>
+    </LinearLayout>
+</LinearLayout>

@@ -21,4 +21,12 @@
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash_icon_transparent</item>
         <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
     </style>
+
+    <style name="MyBottomSheetDialogTheme" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/MyBottomSheetStyle</item>
+    </style>
+
+    <style name="MyBottomSheetStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet_rounded</item>
+    </style>
 </resources>

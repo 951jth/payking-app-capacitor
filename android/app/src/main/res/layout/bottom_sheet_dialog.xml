@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:background="@drawable/bg_bottom_sheet_rounded"
+        android:gravity="center"
+        >
+
+
+        <View
+            android:layout_width="60dp"
+            android:layout_height="2dp"
+            android:background="@color/color_E7E9EE"
+            android:layout_marginBottom="20dp"
+
+            />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/info_update_company_hint"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/color_191919"
+            android:paddingBottom="16dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_grid"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:scrollbars="vertical"
+            />
+
+        <View
+            android:layout_width="122dp"
+            android:layout_height="5dp"
+            android:background="@drawable/rounded_line_black_bg"
+            android:layout_marginBottom="10dp"
+
+            />
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

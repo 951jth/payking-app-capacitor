@@ -65,7 +65,7 @@ function isPayLimitPass(result: PayLimitSummary) {
 
 function showPayLimitAlert(
   result: PayLimitSummary,
-  showAlert: ReturnType<typeof alertStore>['showAlert'],
+  showAlert: (params: { title: string; contents: string }) => void,
 ) {
   if (
     result.isOncePayOverLimit ||

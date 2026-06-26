@@ -19,7 +19,7 @@ export function HomeActionCardsSection() {
     <section className={classes.section}>
       <div className={classes.paymentCard}>
         <HomePaymentButton
-          onClick={() => navigation.navigate('receivePayment')}
+          onClick={() => navigation.navigate('receivePayment', {})}
         />
       </div>
 

@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/root_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/white"
+    >
+
+    <!-- 상단 앱바 (툴바) -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/top_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:minHeight="56dp"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        >
+
+        <!-- 백버튼 -->
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/left_arrow"
+            android:padding="10dp"
+            />
+
+        <!-- 중앙 타이틀 -->
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/info_update_title"
+            android:textColor="@color/color_191919"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            android:layout_marginStart="56dp"
+            android:layout_marginEnd="56dp"
+            android:gravity="center_vertical|center_horizontal" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/content_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/top_toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_marginTop="20dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/txt_card_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scan_number"
+                android:textColor="@color/color_191919"
+                android:textSize="14sp"
+                android:drawableEnd="@drawable/ic_must"
+                android:layout_marginTop="24dp"/>
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/card_input_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                >
+
+                <!-- EditText 1 -->
+                <EditText
+                    android:id="@+id/edit_card_1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:gravity="center"
+                    android:background="@null"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_1E1E1E"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/edit_card_2"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/text_dash_1"
+                    app:layout_constraintWidth_percent="0.22"
+
+                    />
+
+                <!-- Dash 1 -->
+                <TextView
+                    android:id="@+id/text_dash_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/scan_hyphen"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_8B9099"
+                    app:layout_constraintStart_toEndOf="@id/edit_card_1"
+                    app:layout_constraintTop_toTopOf="@id/edit_card_1"
+                    app:layout_constraintBottom_toBottomOf="@id/edit_card_1"
+                    android:layout_marginHorizontal="4dp"
+                    />
+
+                <!-- EditText 2 -->
+                <EditText
+                    android:id="@+id/edit_card_2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:gravity="center"
+                    android:background="@null"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_1E1E1E"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/edit_card_3"
+                    app:layout_constraintStart_toEndOf="@id/text_dash_1"
+                    app:layout_constraintEnd_toStartOf="@id/text_dash_2"
+                    app:layout_constraintTop_toTopOf="@id/edit_card_1"
+                    app:layout_constraintWidth_percent="0.22"
+                    />
+
+                <!-- Dash 2 -->
+                <TextView
+                    android:id="@+id/text_dash_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/scan_hyphen"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_8B9099"
+                    android:layout_marginHorizontal="4dp"
+                    app:layout_constraintStart_toEndOf="@id/edit_card_2"
+                    app:layout_constraintTop_toTopOf="@id/edit_card_2"
+                    app:layout_constraintBottom_toBottomOf="@id/edit_card_2"
+                    />
+
+                <!-- EditText 3 -->
+                <EditText
+                    android:id="@+id/edit_card_3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:gravity="center"
+                    android:background="@null"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_1E1E1E"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/edit_card_4"
+                    app:layout_constraintStart_toEndOf="@id/text_dash_2"
+                    app:layout_constraintEnd_toStartOf="@id/text_dash_3"
+                    app:layout_constraintTop_toTopOf="@id/edit_card_1"
+                    app:layout_constraintWidth_percent="0.22"
+                    />
+
+                <!-- Dash 3 -->
+                <TextView
+                    android:id="@+id/text_dash_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/scan_hyphen"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_8B9099"
+                    android:layout_marginHorizontal="4dp"
+                    app:layout_constraintStart_toEndOf="@id/edit_card_3"
+                    app:layout_constraintTop_toTopOf="@id/edit_card_3"
+                    app:layout_constraintBottom_toBottomOf="@id/edit_card_3"
+                    />
+
+                <!-- EditText 4 -->
+                <EditText
+                    android:id="@+id/edit_card_4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:gravity="center"
+                    android:background="@null"
+                    android:textSize="16sp"
+                    android:textColor="@color/color_1E1E1E"
+                    android:imeOptions="actionNext"
+                    android:nextFocusForward="@id/edit_expire"
+                    app:layout_constraintStart_toEndOf="@id/text_dash_3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/edit_card_1"
+                    app:layout_constraintWidth_percent="0.22"
+                    />
+
+                <!-- 밑줄: EditText1 -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E7E9EE"
+                    app:layout_constraintTop_toBottomOf="@id/edit_card_1"
+                    app:layout_constraintStart_toStartOf="@id/edit_card_1"
+                    app:layout_constraintEnd_toEndOf="@id/edit_card_1"
+                    android:layout_marginTop="14dp"
+                    />
+
+                <!-- 밑줄: EditText2 -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E7E9EE"
+                    app:layout_constraintTop_toBottomOf="@id/edit_card_2"
+                    app:layout_constraintStart_toStartOf="@id/edit_card_2"
+                    app:layout_constraintEnd_toEndOf="@id/edit_card_2"
+                    android:layout_marginTop="14dp"
+                    />
+
+                <!-- 밑줄: EditText3 -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E7E9EE"
+                    app:layout_constraintTop_toBottomOf="@id/edit_card_3"
+                    app:layout_constraintStart_toStartOf="@id/edit_card_3"
+                    app:layout_constraintEnd_toEndOf="@id/edit_card_3"
+                    android:layout_marginTop="14dp"
+                    />
+
+                <!-- 밑줄: EditText4 -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E7E9EE"
+                    app:layout_constraintTop_toBottomOf="@id/edit_card_4"
+                    app:layout_constraintStart_toStartOf="@id/edit_card_4"
+                    app:layout_constraintEnd_toEndOf="@id/edit_card_4"
+                    android:layout_marginTop="14dp"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/txt_card_expire"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/scan_expire_date"
+                android:textColor="@color/color_191919"
+                android:textSize="14sp"
+                android:drawableEnd="@drawable/ic_must"
+            android:layout_marginTop="24dp"/>
+
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/expire_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                >
+
+            <!-- EditText 1 -->
+            <EditText
+                android:id="@+id/edit_expire"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number"
+                android:maxLength="5"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:textSize="16sp"
+                android:textColor="@color/color_1E1E1E"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+
+                />
+
+                <!-- 밑줄: EditText1 -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E7E9EE"
+                    app:layout_constraintTop_toBottomOf="@id/edit_expire"
+                    app:layout_constraintStart_toStartOf="@id/edit_expire"
+                    app:layout_constraintEnd_toEndOf="@id/edit_expire"
+                    android:layout_marginTop="14dp"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <TextView
+                android:id="@+id/txt_card_company"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/info_update_company"
+                android:textColor="@color/color_191919"
+                android:textSize="14sp"
+                android:drawableEnd="@drawable/ic_must"
+                android:layout_marginTop="24dp"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/company_selection_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp">
+
+                <!-- 중간 Guideline으로 양쪽 간격 확보 -->
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline_middle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+                <!-- TextView 1 (왼쪽 카드사) -->
+                <EditText
+                    android:id="@+id/txt_company_1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:textColor="@color/color_191919"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical"
+                    android:drawableEnd="@drawable/ic_down_arrow"
+                    android:drawablePadding="8dp"
+                    android:paddingBottom="8dp"
+                    android:layout_marginEnd="4dp"
+                    android:hint="@string/info_update_company_hint"
+                    android:textColorHint="@color/color_C7CED9"
+                    android:focusable="false"
+                    android:clickable="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/guideline_middle" />
+
+                <!-- TextView 2 (오른쪽 카드사) -->
+                <EditText
+                    android:id="@+id/txt_company_2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:textColor="@color/color_191919"
+                    android:textSize="16sp"
+                    android:gravity="center_vertical"
+                    android:drawableEnd="@drawable/ic_down_arrow"
+                    android:drawablePadding="8dp"
+                    android:paddingBottom="8dp"
+                    android:layout_marginStart="4dp"
+                    android:hint="@string/info_update_installment_hint"
+                    android:textColorHint="@color/color_C7CED9"
+                    android:focusable="false"
+                    android:clickable="true"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/guideline_middle"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <!-- 밑줄: TextView 1 -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E7E9EE"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/txt_company_1"
+                    app:layout_constraintStart_toStartOf="@id/txt_company_1"
+                    app:layout_constraintEnd_toEndOf="@id/txt_company_1" />
+
+                <!-- 밑줄: TextView 2 -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="@color/color_E7E9EE"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/txt_company_2"
+                    app:layout_constraintStart_toStartOf="@id/txt_company_2"
+                    app:layout_constraintEnd_toEndOf="@id/txt_company_2" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/txt_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:textColor="@color/color_E22C17"
+                android:text="@string/info_update_company_error"
+                android:visibility="gone"
+                />
+
+
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                />
+
+            <LinearLayout
+                android:id="@+id/button_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="24dp"
+                android:gravity="center"
+                app:layout_constraintTop_toBottomOf="@id/company_selection_container"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <Button
+                    android:id="@+id/btn_retry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/scan_retry"
+                    android:textSize="14sp"
+                    android:background="@color/transparent"
+                    android:textColor="@color/color_8B9099" />
+
+                <Button
+                    android:id="@+id/btn_payment"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="@string/scan_payment"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:background="@drawable/rounded_button_gray_bg"
+                    android:textColor="@color/color_8B9099" />
+
+
+                <View
+                    android:layout_width="122dp"
+                    android:layout_height="5dp"
+                    android:background="@drawable/rounded_line_black_bg"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="20dp"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/loading_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

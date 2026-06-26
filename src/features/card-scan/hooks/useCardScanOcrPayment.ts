@@ -60,11 +60,18 @@ export function useCardScanOcrPayment({
       return;
     }
 
-    await PaykingOcr.presentOCRView({
-      issueBankList,
-      selectBankCode: formState.selectedBankCode,
-      selectQuotaMonths: String(formState.selectedQuotaMonths),
-    });
+    try {
+      await PaykingOcr.presentOCRView({
+        issueBankList,
+        selectBankCode: formState.selectedBankCode,
+        selectQuotaMonths: String(formState.selectedQuotaMonths),
+      });
+    } catch (error) {
+      showAlert({
+        title: "카드 스캔 결제",
+        contents: getCardScanErrorMessage(error),
+      });
+    }
   }, [formErrors, formState, issueBankList, showAlert, totalPayAmount]);
 
   const requestKeyinPay = useCallback(
