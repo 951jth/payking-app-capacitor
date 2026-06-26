@@ -1,10 +1,10 @@
-import iconCard from "../../assets/icons/Icon_card_40.svg";
-import iconKakao from "../../assets/icons/Icon_kakao_40.svg";
-import iconLink from "../../assets/icons/Icon_link_40.svg";
-import iconQr from "../../assets/icons/Icon_qr_40.svg";
-import { PKButton } from "../button/PKButton";
-import { PKText } from "../typography/PKText";
-import type { PaymentMethod } from "./paymentMethod";
+import iconCard from "../../../assets/icons/Icon_card_40.svg";
+import iconKakao from "../../../assets/icons/Icon_kakao_40.svg";
+import iconLink from "../../../assets/icons/Icon_link_40.svg";
+import iconQr from "../../../assets/icons/Icon_qr_40.svg";
+import { PKButton } from "../../../components/button/PKButton";
+import { PKText } from "../../../components/typography/PKText";
+import type { PaymentMethod } from "../utils/paymentMethod";
 
 const paymentMethods = [
   {

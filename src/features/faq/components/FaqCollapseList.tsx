@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import type { ApiResponse } from '../../../service/axios'
 import standardService from '../../../service/standard'
-import { PKCollapseItem } from '../../collapse/PKCollapseItem'
-import { PKText } from '../../typography/PKText'
+import { PKCollapseItem } from '../../../components/collapse/PKCollapseItem'
+import { PKText } from '../../../components/typography/PKText'
 
 export type FaqItem = {
   id: string | number

@@ -1,8 +1,8 @@
 import dayjs from 'dayjs'
 import type { CSSProperties } from 'react'
-import { addCommasToNumber, formatTelephone } from '../../utils/format'
-import { PKPayStatusesChip } from '../custom/PKPayStatusesChip'
-import { PKText } from '../typography/PKText'
+import { addCommasToNumber, formatTelephone } from '../../../utils/format'
+import { PKPayStatusesChip } from '../../../components/custom/PKPayStatusesChip'
+import { PKText } from '../../../components/typography/PKText'
 
 export type PaymentListItem = {
   id?: string | number

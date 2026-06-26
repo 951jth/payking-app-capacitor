@@ -1,9 +1,9 @@
 import dayjs from 'dayjs'
 import type { CSSProperties } from 'react'
-import { addCommasToNumber, formatTelephone } from '../../utils/format'
-import type { SettlementListItem } from '../../types/settlement'
-import { PKSettlementStatusesChip } from '../custom/PKSettlementStatusesChip'
-import { PKText } from '../typography/PKText'
+import type { SettlementListItem } from '../../../types/settlement'
+import { addCommasToNumber, formatTelephone } from '../../../utils/format'
+import { PKSettlementStatusesChip } from '../../../components/custom/PKSettlementStatusesChip'
+import { PKText } from '../../../components/typography/PKText'
 
 type SettlementItemProps = {
   item: SettlementListItem

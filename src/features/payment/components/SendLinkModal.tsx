@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { BottomModal } from './BottomModal'
-import { PKButton } from '../button/PKButton'
-import { PKInput } from '../input/PKInput'
-import { PKText } from '../typography/PKText'
+import { PKButton } from '../../../components/button/PKButton'
+import { PKInput } from '../../../components/input/PKInput'
+import { BottomModal } from '../../../components/modal/BottomModal'
+import { PKText } from '../../../components/typography/PKText'
 
 type SendLinkModalProps = {
   visible?: boolean

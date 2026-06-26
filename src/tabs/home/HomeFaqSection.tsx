@@ -1,4 +1,4 @@
-import { FaqCollapseList } from '../../components/features/faq/FaqCollapseList'
+import { FaqCollapseList } from '../../features/faq/components/FaqCollapseList'
 import { PKMoreButton, PKText } from '../../components'
 import { useAlertStore } from '../../stores/alertStore'
 

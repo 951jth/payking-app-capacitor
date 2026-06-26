@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
-import iconArrowRight from '../../assets/icons/Icon_arrow_right_20.svg'
-import { PKText } from '../typography/PKText'
+import iconArrowRight from '../../../assets/icons/Icon_arrow_right_20.svg'
+import { PKText } from '../../../components/typography/PKText'
 
 type SettingItemProps = {
   title?: string
