@@ -72,7 +72,7 @@ export const LoginActivity: ActivityComponentType<"login"> = () => {
     <AppContainer
       bottomChildren={
         <PKButton
-          buttonType="standard"
+          type="standard"
           disabled={!id || !password || !deviceToken}
           loading={loggingIn}
           onClick={handleLogin}
@@ -116,7 +116,7 @@ export const LoginActivity: ActivityComponentType<"login"> = () => {
             </PKText>
             {deviceReady && (
               <PKButton
-                buttonType="text"
+                type="text"
                 className={classes.linkButton}
                 onClick={handleRetryDeviceRegistration}
                 textClassName={classes.linkButtonText}
@@ -130,7 +130,7 @@ export const LoginActivity: ActivityComponentType<"login"> = () => {
           <CSInquiryButton />
           <div className={classes.linkGroup}>
             <PKButton
-              buttonType="text"
+              type="text"
               className={classes.linkButton}
               onClick={() => navigation.navigate("findId", {})}
               textClassName={classes.linkButtonText}
@@ -138,7 +138,7 @@ export const LoginActivity: ActivityComponentType<"login"> = () => {
             />
             <PKText className={classes.linkDivider}>|</PKText>
             <PKButton
-              buttonType="text"
+              type="text"
               className={classes.linkButton}
               onClick={() => navigation.navigate("findPw", {})}
               textClassName={classes.linkButtonText}

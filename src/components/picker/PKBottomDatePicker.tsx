@@ -81,7 +81,7 @@ export function PKBottomDatePicker({
           </div>
           <div className={classes.actions}>
             <PKButton
-              buttonType="standard"
+              type="standard"
               colorType="primary"
               onClick={handleApply}
               title="적용"

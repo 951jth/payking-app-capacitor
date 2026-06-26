@@ -131,13 +131,13 @@ export const CancelRequestActivity: ActivityComponentType<'cancelRequest'> = () 
       bottomChildren={
         <div className={classes.bottomActions}>
           <PKButton
-            buttonType="standard"
+            type="standard"
             colorType="disable"
             onClick={navigation.goBack}
             title="취소"
           />
           <PKButton
-            buttonType="standard"
+            type="standard"
             colorType="warning"
             disabled={loading}
             loading={submitting}

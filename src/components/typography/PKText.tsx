@@ -3,6 +3,7 @@ import type { CSSProperties, ElementType, HTMLAttributes, ReactNode } from 'reac
 type PKTextProps = HTMLAttributes<HTMLElement> & {
   as?: ElementType
   children?: ReactNode
+  numberOfLines?: number
   weight?: CSSProperties['fontWeight']
 }
 
@@ -10,6 +11,7 @@ export function PKText({
   as: Component = 'span',
   className,
   children,
+  numberOfLines = 0,
   weight,
   style,
   ...props
@@ -17,12 +19,35 @@ export function PKText({
   return (
     <Component
       className={[classes.base, className].filter(Boolean).join(' ')}
-      style={{ fontWeight: weight, ...style }}
+      style={{
+        fontWeight: weight,
+        ...getLineClampStyle(numberOfLines),
+        ...style,
+      }}
       {...props}
     >
       {children}
     </Component>
   )
+}
+
+function getLineClampStyle(numberOfLines: number): CSSProperties {
+  if (numberOfLines <= 0) return {}
+
+  if (numberOfLines === 1) {
+    return {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    }
+  }
+
+  return {
+    display: '-webkit-box',
+    overflow: 'hidden',
+    WebkitBoxOrient: 'vertical',
+    WebkitLineClamp: numberOfLines,
+  }
 }
 
 const classes = {

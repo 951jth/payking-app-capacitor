@@ -48,7 +48,7 @@ export function SendLinkModal({
         </div>
         <div className={classes.action}>
           <PKButton
-            buttonType="standard"
+            type="standard"
             colorType="primary"
             disabled={phoneNumber.length !== 11}
             onClick={() => onSend?.(phoneNumber)}

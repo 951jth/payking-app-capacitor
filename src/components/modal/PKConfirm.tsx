@@ -75,7 +75,7 @@ export function PKConfirm({
           <div className={classes.actions}>
             <AlertDialog.Cancel asChild>
               <PKButton
-                buttonType="standard"
+                type="standard"
                 colorType={rejectColorType}
                 onClick={onReject}
                 title={rejectTitle}
@@ -83,7 +83,7 @@ export function PKConfirm({
             </AlertDialog.Cancel>
             <AlertDialog.Action asChild>
               <PKButton
-                buttonType="standard"
+                type="standard"
                 colorType={confirmColorType}
                 onClick={onConfirm}
                 title={confirmTitle}

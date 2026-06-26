@@ -28,7 +28,7 @@ export function CSInquiryButton({
   return (
     <>
       <PKButton
-        buttonType="text"
+        type="text"
         className={buttonClassName ?? classes.button}
         onClick={() => setConfirmVisible(true)}
         textClassName={buttonTextClassName ?? classes.buttonText}

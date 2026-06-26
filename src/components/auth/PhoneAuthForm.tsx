@@ -141,7 +141,7 @@ export const PhoneAuthForm = forwardRef<PhoneAuthFormRef, PhoneAuthFormProps>(
                 {authErrorMessage}
               </PKText>
               <PKButton
-                buttonType="text"
+                type="text"
                 className={classes.resendButton}
                 onClick={() => {
                   setIsAuthFail(false)
@@ -155,7 +155,7 @@ export const PhoneAuthForm = forwardRef<PhoneAuthFormRef, PhoneAuthFormProps>(
 
         {!sendAuth && (
           <PKButton
-            buttonType="standard"
+            type="standard"
             disabled={!canSendAuth}
             loading={sendingAuth}
             onClick={() => void handleSendAuth()}
@@ -165,7 +165,7 @@ export const PhoneAuthForm = forwardRef<PhoneAuthFormRef, PhoneAuthFormProps>(
 
         {sendAuth && (
           <PKButton
-            buttonType="standard"
+            type="standard"
             disabled={authCode.length !== 6 || time === null || time < 0}
             loading={verifying}
             onClick={() => void handleVerify()}

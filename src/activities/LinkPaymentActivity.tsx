@@ -303,7 +303,7 @@ export const LinkPaymentActivity: ActivityComponentType<"linkPayment"> = () => {
             무이자할부는 결제자가 직접 선택할 수 있습니다.
           </PKText>
           <PKButton
-            buttonType="standard"
+            type="standard"
             className={classes.interestButton}
             colorType="solid-primary"
             onClick={handleInterestFreeInfo}
@@ -311,13 +311,13 @@ export const LinkPaymentActivity: ActivityComponentType<"linkPayment"> = () => {
           />
           <div className={classes.actionRow}>
             <PKButton
-              buttonType="standard"
+              type="standard"
               disabled={isDirect && !directGoods?.name?.trim()}
               onClick={() => handleSubmit("QR")}
               title="QR코드 만들기"
             />
             <PKButton
-              buttonType="standard"
+              type="standard"
               disabled={isDirect && !directGoods?.name?.trim()}
               onClick={() => handleSubmit("LINK")}
               title="링크 보내기"
@@ -405,7 +405,7 @@ export const LinkPaymentActivity: ActivityComponentType<"linkPayment"> = () => {
               <RequiredMark />
             </div>
             <PKButton
-              buttonType="standard"
+              type="standard"
               className={classes.loadGoodsButton}
               onClick={handleSelectGoods}
               textClassName={classes.loadGoodsText}

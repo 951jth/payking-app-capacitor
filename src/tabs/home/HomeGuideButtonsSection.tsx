@@ -26,7 +26,7 @@ export function HomeGuideButtonsSection() {
     <section className={classes.section}>
       {guideLinkInfo?.isPayGuide && (
         <PKButton
-          buttonType="standard"
+          type="standard"
           className={classes.button}
           colorType="primary"
           onClick={() => openGuide('결제 방법', guideLinkInfo.payGuideUrl)}
@@ -35,7 +35,7 @@ export function HomeGuideButtonsSection() {
       )}
       {guideLinkInfo?.isCancelGuide && (
         <PKButton
-          buttonType="standard"
+          type="standard"
           className={classes.button}
           colorType="primary"
           onClick={() => openGuide('결제 취소 방법', guideLinkInfo.cancelGuideUrl)}

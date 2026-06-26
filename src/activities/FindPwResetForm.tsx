@@ -50,7 +50,7 @@ export function FindPwResetForm({ onSubmit, submitting = false }: FindPwResetFor
       </div>
 
       <PKButton
-        buttonType="standard"
+        type="standard"
         disabled={!canSubmit}
         loading={submitting}
         onClick={() => void onSubmit({ password, confirmPassword })}

@@ -303,7 +303,7 @@ export const InvoiceActivity: ActivityComponentType<'invoice'> = () => {
           <div className={classes.bottomActions}>
             {cancelButtonAction && (
               <PKButton
-                buttonType="standard"
+                type="standard"
                 colorType="warning"
                 onClick={openCancelAction}
                 title={cancelButtonAction.title}
@@ -311,7 +311,7 @@ export const InvoiceActivity: ActivityComponentType<'invoice'> = () => {
             )}
             {canSendReceipt && (
               <PKButton
-                buttonType="standard"
+                type="standard"
                 onClick={openReceiptModal}
                 title="영수증 보내기"
               />
@@ -487,7 +487,7 @@ export const InvoiceActivity: ActivityComponentType<'invoice'> = () => {
             value={receiptPhoneNumber}
           />
           <PKButton
-            buttonType="standard"
+            type="standard"
             colorType="primary"
             disabled={receiptPhoneNumber.length < 10}
             loading={sendingReceipt}

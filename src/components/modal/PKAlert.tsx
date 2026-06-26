@@ -50,7 +50,7 @@ export function PKAlert({
           <div className={classes.actions}>
             <AlertDialog.Action asChild>
               <PKButton
-                buttonType="standard"
+                type="standard"
                 colorType="primary"
                 onClick={onConfirm}
                 title={confirmTitle}

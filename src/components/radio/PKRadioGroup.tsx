@@ -40,7 +40,7 @@ export function PKRadioGroup<Value extends string>({
     <div className={[classes.group, className].filter(Boolean).join(' ')}>
       {useAll && (
         <PKButton
-          buttonType="standard"
+          type="standard"
           className={classes.optionButton}
           colorType={value == null ? 'primary' : 'disable'}
           onClick={() => onChange(null)}
@@ -53,7 +53,7 @@ export function PKRadioGroup<Value extends string>({
 
         return (
           <PKButton
-            buttonType="standard"
+            type="standard"
             className={classes.optionButton}
             colorType={isSelected ? 'primary' : 'disable'}
             key={option.value}

@@ -129,7 +129,7 @@ export function PKBottomWheelPicker<Value extends string | number = string | num
 
           <div className={classes.actions}>
             <PKButton
-              buttonType="standard"
+              type="standard"
               colorType="primary"
               onClick={handleApply}
               title="적용"

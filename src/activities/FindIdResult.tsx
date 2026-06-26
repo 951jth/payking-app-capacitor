@@ -13,7 +13,7 @@ export function FindIdResult({ accounts, onLogin }: FindIdResultProps) {
         <PKText className={classes.text}>등록된 회원이 아닙니다.</PKText>
         <PKText className={classes.text}>확인 후 다시 시도해주세요.</PKText>
         <PKButton
-          buttonType="standard"
+          type="standard"
           className={classes.loginButton}
           onClick={onLogin}
           title="로그인하기"
@@ -33,7 +33,7 @@ export function FindIdResult({ accounts, onLogin }: FindIdResultProps) {
           입니다.
         </PKText>
         <PKButton
-          buttonType="standard"
+          type="standard"
           className={classes.loginButton}
           onClick={onLogin}
           title="로그인하기"
@@ -54,7 +54,7 @@ export function FindIdResult({ accounts, onLogin }: FindIdResultProps) {
         ))}
       </div>
       <PKButton
-        buttonType="standard"
+        type="standard"
         className={classes.loginButton}
         onClick={onLogin}
         title="로그인하기"

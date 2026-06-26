@@ -98,7 +98,7 @@ export function SettlementHistoryFilterModal({
 
         <div className={classes.actions}>
           <PKButton
-            buttonType="standard"
+            type="standard"
             colorType="solid-primary"
             onClick={onApply}
             title="적용"

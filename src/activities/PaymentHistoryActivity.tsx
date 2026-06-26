@@ -622,7 +622,7 @@ export const PaymentHistoryActivity: ActivityComponentType<
 
           <div className={classes.filterActions}>
             <PKButton
-              buttonType="standard"
+              type="standard"
               colorType="solid-primary"
               onClick={handleApplyFilter}
               title="적용"
