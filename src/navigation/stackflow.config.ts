@@ -18,6 +18,7 @@ declare module "@stackflow/config" {
       id: string | number;
     };
     settlementHistory: Record<string, never>;
+    receivePayment: Record<string, never>;
     linkPayment: {
       enterPrice?: number | string;
       selectedGoodsList?: LinkPaymentGoods[];

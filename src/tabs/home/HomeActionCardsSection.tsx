@@ -1,9 +1,11 @@
 import iconInterestFee from '../../assets/icons/Icon_interest_fee.svg'
 import iconLimitUpdate from '../../assets/icons/Icon_limit_update.svg'
 import { HomePaymentButton } from '../../components'
+import { useAppNavigation } from '../../navigation/useAppNavigation'
 import { useAlertStore } from '../../stores/alertStore'
 
 export function HomeActionCardsSection() {
+  const navigation = useAppNavigation()
   const showAlert = useAlertStore((state) => state.showAlert)
 
   const openPlaceholder = (label: string) => {
@@ -16,7 +18,9 @@ export function HomeActionCardsSection() {
   return (
     <section className={classes.section}>
       <div className={classes.paymentCard}>
-        <HomePaymentButton onClick={() => openPlaceholder('결제받기')} />
+        <HomePaymentButton
+          onClick={() => navigation.navigate('receivePayment')}
+        />
       </div>
 
       <div className={classes.sideColumn}>

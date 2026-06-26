@@ -7,6 +7,7 @@ import { LinkPaymentActivity } from '../activities/LinkPaymentActivity'
 import { LoginActivity } from '../activities/LoginActivity'
 import { PaymentHistoryActivity } from '../activities/PaymentHistoryActivity'
 import { PermissionActivity } from '../activities/PermissionActivity'
+import { ReceivePaymentActivity } from '../activities/ReceivePaymentActivity'
 import { SettingActivity } from '../activities/SettingActivity'
 import { SettlementHistoryActivity } from '../activities/SettlementHistoryActivity'
 
@@ -71,6 +72,12 @@ export const activityDefinitions = [
     auth: true,
   },
   {
+    name: 'receivePayment',
+    title: '결제받기',
+    headerShown: true,
+    auth: true,
+  },
+  {
     name: 'linkPayment',
     title: '링크/QR코드 결제',
     headerShown: true,
@@ -94,6 +101,7 @@ export const activityComponents = {
   invoice: InvoiceActivity,
   cancelRequest: CancelRequestActivity,
   settlementHistory: SettlementHistoryActivity,
+  receivePayment: ReceivePaymentActivity,
   linkPayment: LinkPaymentActivity,
   setting: SettingActivity,
 }
