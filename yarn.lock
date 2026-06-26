@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@capacitor-community/contacts@^7.2.0":
+  version "7.2.0"
+  resolved "https://registry.npmjs.org/@capacitor-community/contacts/-/contacts-7.2.0.tgz#f9ff00e237c52c3ca6a6ea7fe5dc87c2b0f6875d"
+  integrity sha512-s/DVHuhMYbIbkSCuZyx6+ZDIho2wuUdtcb+cre4igo5Fz26lkBlayRSo+tBBfJsYxLlrQX21Jy8rMmUCdz2GTQ==
+
 "@babel/code-frame@^7.29.7":
   version "7.29.7"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.29.7.tgz#f2fbbfea87c44a21590ec515b778b2c26d8866e7"
