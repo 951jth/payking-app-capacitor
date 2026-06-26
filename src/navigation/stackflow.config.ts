@@ -23,6 +23,10 @@ declare module "@stackflow/config" {
       enterPrice?: number | string;
       selectedGoodsList?: LinkPaymentGoods[];
     };
+    cardScan: {
+      enterPrice: number | string;
+      selectedGoodsList?: LinkPaymentGoods[];
+    };
     setting: Record<string, never>;
   }
 }

@@ -1,4 +1,5 @@
 import { CancelRequestActivity } from '../activities/CancelRequestActivity'
+import { CardScanActivity } from '../activities/CardScanActivity'
 import { FindIdActivity } from '../activities/FindIdActivity'
 import { FindPwActivity } from '../activities/FindPwActivity'
 import { MainTabActivity } from '../activities/MainTabActivity'
@@ -84,6 +85,12 @@ export const activityDefinitions = [
     auth: true,
   },
   {
+    name: 'cardScan',
+    title: '카드 스캔 결제',
+    headerShown: true,
+    auth: true,
+  },
+  {
     name: 'setting',
     title: '설정',
     headerShown: true,
@@ -103,6 +110,7 @@ export const activityComponents = {
   settlementHistory: SettlementHistoryActivity,
   receivePayment: ReceivePaymentActivity,
   linkPayment: LinkPaymentActivity,
+  cardScan: CardScanActivity,
   setting: SettingActivity,
 }
 

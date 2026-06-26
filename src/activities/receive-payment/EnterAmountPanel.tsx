@@ -31,10 +31,8 @@ export function EnterAmountPanel() {
     }
 
     if (method === "CARD_SCAN") {
-      showAlert({
-        title: "카드 스캔 결제",
-        contents:
-          "카드 스캔 결제는 Capacitor 네이티브 플러그인 구현 후 연결합니다.",
+      navigation.navigate("cardScan", {
+        enterPrice: enteredPrice,
       });
       return;
     }
