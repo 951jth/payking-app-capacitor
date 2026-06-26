@@ -110,8 +110,10 @@ navigation.goBack();
 - `PKText` -> PayKing 폰트/색상/크기 토큰을 적용하는 `PKText`
 - `PKButton` -> primary, secondary, disabled, text button 형태를 지원하는 `PKButton`
 - `PKInput` -> id/password/phone 등 입력 타입과 에러/비활성 상태를 지원하는 `PKInput`
+- `Calculator` -> 결제 금액 사칙연산 입력을 담당하는 `PKCalculator`
 - `PKAlert`, `PKConfirm` -> Radix AlertDialog 기반 모달 컴포넌트
 - `BottomModal` -> Radix Dialog 기반 하단 시트
+- `PKTab` -> controlled 방식의 상단 탭 UI를 담당하는 `PKTopTab`
 - `CustomTabBar` -> PayKing 하단 탭 UI
 - header option 계층 -> Stackflow activity title/header 컴포넌트
 
@@ -120,6 +122,7 @@ navigation.goBack();
 - React Native 컴포넌트 이름을 무조건 그대로 복제하기보다, 기존 화면 포팅 비용을 줄이는 범위에서 API를 유사하게 유지한다.
 - RN `StyleSheet` 객체를 그대로 가져오지 않고 Tailwind/CSS 변수/컴포넌트 props로 디자인 토큰화한다.
 - 네이티브 기능에 묶인 컴포넌트는 UI와 기능 어댑터를 분리한다.
+- `PKButton`의 시각 타입은 RN과 동일한 `type` prop을 사용하고, 웹 HTML 타입은 `htmlType`으로 구분한다.
 
 ## 초기 구현 원칙
 
@@ -209,3 +212,16 @@ API 환경:
 - 카메라, 푸시 알림, 딥링크, WebView, 디바이스 정보, 네트워크 상태를 Capacitor 플러그인 기준으로 매핑한다.
 - 카드 OCR/키인 결제처럼 기존 RN 네이티브 모듈에 강하게 묶인 기능은 커스텀 Capacitor 플러그인 후보로 분리한다.
 - 기능별 브라우저 개발 가능 범위와 네이티브 앱 확인 필요 범위를 구분한다.
+
+### 7. 결제받기 화면 포팅
+
+- `receivePayment` activity와 홈 결제받기 진입 경로를 추가했다.
+- React Native `PKTab`의 디자인을 기준으로 `PKTopTab` 공통 컴포넌트를 추가했다.
+- `PKTopTab`은 activity에서 활성 탭을 관리하는 controlled API를 사용한다.
+- `금액 입력`, `상품 선택` 탭 shell을 구성했다.
+- 탭 패널은 전환 후에도 내부 상태가 유지되도록 mounted 상태를 보존한다.
+- `PKCalculator` 공통 컴포넌트를 추가하고 `금액 입력` 탭에 연결했다.
+- 결제수단 4개 버튼과 1,000원 최소 결제금액 검증을 연결했다.
+- 카톡 링크와 QR 코드는 `linkPayment`로 이동하고, 카드 스캔과 저장 링크는 후속 구현 안내를 표시한다.
+- `EnterAmountPanel`, `SelectProductPanel`로 탭 내용을 분리해 activity는 탭 조립만 담당한다.
+- 다음 단계에서 상품 조회/선택 기능을 연결한다.

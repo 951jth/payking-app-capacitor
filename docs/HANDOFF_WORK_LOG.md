@@ -141,12 +141,17 @@ export const CAPACITOR_SERVER_URL = "";
 - 앱 프레임, 헤더, 버튼, 입력, 모달, 탭, 리스트 placeholder 등 공통 UI가 구성되어 있다.
 - 모바일 기준 버튼/입력/모달 터치 영역과 pressable 유틸이 정리되는 중이다.
 - `BottomModal`은 앱 프레임 내부 portal 기준으로 뜨도록 조정되어 있다.
+- `PKButton`은 React Native와 동일하게 시각 타입을 `type="standard"` 형태로 받는다.
+- HTML button의 네이티브 타입은 충돌 방지를 위해 `htmlType="submit"` 형태로 분리한다.
+- 기존 웹 전용 `buttonType` 호출부는 모두 `type`으로 마이그레이션했다.
 
 주요 파일:
 
 - `src/components/layout/AppContainer.tsx`
 - `src/components/navigation/AppHeader.tsx`
 - `src/components/navigation/PKTabBar.tsx`
+- `src/components/navigation/PKTopTab.tsx`
+- `src/components/calculator/PKCalculator.tsx`
 - `src/components/button/PKButton.tsx`
 - `src/components/button/PKIconButton.tsx`
 - `src/components/button/PKMoreButton.tsx`
@@ -168,6 +173,7 @@ activity registry 기준 주요 화면:
 - `invoice`
 - `cancelRequest`
 - `settlementHistory`
+- `receivePayment`
 - `linkPayment`
 - `setting`
 - `userHome`
@@ -182,6 +188,7 @@ activity registry 기준 주요 화면:
 - `src/activities/InvoiceActivity.tsx`
 - `src/activities/CancelRequestActivity.tsx`
 - `src/activities/SettlementHistoryActivity.tsx`
+- `src/activities/ReceivePaymentActivity.tsx`
 - `src/activities/LinkPaymentActivity.tsx`
 - `src/activities/SettingActivity.tsx`
 
@@ -210,6 +217,38 @@ activity registry 기준 주요 화면:
 - `src/components/custom/PKPayStatusesChip.tsx`
 - `src/components/custom/PKSettlementStatusesChip.tsx`
 - `src/components/radio/PKRadioGroup.tsx`
+
+### 6. 결제받기
+
+React Native의 `ReceivePaymentScreen` 포팅을 시작했다.
+
+현재 반영 상태:
+
+- Stackflow에 인증 화면 `receivePayment`를 등록했다.
+- 홈의 `결제받기` 버튼을 `receivePayment` activity에 연결했다.
+- `금액 입력`, `상품 선택` 상단 탭 구조를 추가했다.
+- 상단 탭 UI는 재사용 가능한 `PKTopTab` 공통 컴포넌트로 분리했다.
+- `PKTopTab`은 controlled 상태, ARIA tab 구조, 좌우 방향키/Home/End 키 이동을 지원한다.
+- 탭을 전환해도 내부 입력 상태가 유지되도록 각 패널은 mounted 상태로 보존한다.
+- `금액 입력` 탭에 재사용 가능한 `PKCalculator`를 연결했다.
+- `PKCalculator`는 숫자 입력, 사칙연산, AC, 한 글자 삭제, 삭제 길게 누르기를 지원한다.
+- 계산은 기존 React Native 화면과 같이 연산자 우선순위 없이 왼쪽부터 순서대로 처리한다.
+- `금액 입력` 탭에 카드 스캔, 카톡 링크, QR 코드, 저장 링크 결제 버튼을 추가했다.
+- 카톡 링크와 QR 코드는 계산 금액을 `linkPayment` activity로 전달한다.
+- 카드 스캔과 저장 링크는 후속 activity/네이티브 기능 구현 전까지 안내 alert를 표시한다.
+- 카드 스캔, 카톡 링크, QR 코드 결제는 1,000원 미만 금액을 차단한다.
+- 상품 선택 기능은 아직 placeholder 상태다.
+
+주요 파일:
+
+- `src/activities/ReceivePaymentActivity.tsx`
+- `src/activities/receive-payment/EnterAmountPanel.tsx`
+- `src/activities/receive-payment/SelectProductPanel.tsx`
+- `src/components/calculator/PKCalculator.tsx`
+- `src/components/navigation/PKTopTab.tsx`
+- `src/tabs/home/HomeActionCardsSection.tsx`
+- `src/navigation/activityRegistry.ts`
+- `src/navigation/stackflow.config.ts`
 
 ## 현재 검증 상태
 
