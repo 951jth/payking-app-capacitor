@@ -6,12 +6,19 @@ import { InvoiceActivity } from '../activities/InvoiceActivity'
 import { LinkPaymentActivity } from '../activities/LinkPaymentActivity'
 import { LoginActivity } from '../activities/LoginActivity'
 import { PaymentHistoryActivity } from '../activities/PaymentHistoryActivity'
+import { PermissionActivity } from '../activities/PermissionActivity'
 import { SettingActivity } from '../activities/SettingActivity'
 import { SettlementHistoryActivity } from '../activities/SettlementHistoryActivity'
 
 export const initialActivity = 'login'
 
 export const activityDefinitions = [
+  {
+    name: 'permission',
+    title: '권한 안내',
+    headerShown: false,
+    auth: false,
+  },
   {
     name: 'login',
     title: '로그인',
@@ -78,6 +85,7 @@ export const activityDefinitions = [
 ] as const
 
 export const activityComponents = {
+  permission: PermissionActivity,
   login: LoginActivity,
   findId: FindIdActivity,
   findPw: FindPwActivity,

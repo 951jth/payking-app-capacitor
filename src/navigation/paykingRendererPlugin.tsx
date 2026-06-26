@@ -1,6 +1,7 @@
 import type { StackflowReactPlugin } from '@stackflow/react'
 import { AuthRouteGuard } from './AuthRouteGuard'
 import { NavigationBackHandler } from './NavigationBackHandler'
+import { PermissionRouteGuard } from './PermissionRouteGuard'
 
 export function paykingRendererPlugin(): StackflowReactPlugin {
   return () => ({
@@ -13,6 +14,9 @@ export function paykingRendererPlugin(): StackflowReactPlugin {
       return (
         <div className="pk-shell">
           <div className="pk-stack">
+            <PermissionRouteGuard
+              topActivityName={activities.find((activity) => activity.isTop)?.name}
+            />
             <AuthRouteGuard
               topActivityName={activities.find((activity) => activity.isTop)?.name}
             />

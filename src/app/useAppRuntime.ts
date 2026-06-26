@@ -6,6 +6,7 @@ import type { ApiResponse } from '../service/axios'
 import { useDeviceStore } from '../stores/deviceStore'
 import { useGlobalStore, type CSInfo, type GuideLinkInfo } from '../stores/globalStore'
 import { useSessionStore } from '../stores/sessionStore'
+import { usePermissionStore } from '../stores/permissionStore'
 
 export function useAppRuntime() {
   const deviceHydrated = useDeviceStore((state) => state.hydrated)
@@ -22,6 +23,12 @@ export function useAppRuntime() {
       useGlobalStore
         .getState()
         .setAppState(isActive ? 'foreground' : 'background')
+
+      if (isActive) {
+        void usePermissionStore.getState().checkPermissions().catch((error) => {
+          console.warn('포그라운드 권한 재확인 실패:', error)
+        })
+      }
     })
 
     const networkListener = addNetworkStatusListener((status) => {

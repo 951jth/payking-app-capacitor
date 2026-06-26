@@ -4,6 +4,7 @@ import { activityDefinitions, initialActivity } from "./activityRegistry";
 
 declare module "@stackflow/config" {
   interface Register {
+    permission: Record<string, never>;
     login: Record<string, never>;
     findId: Record<string, never>;
     findPw: Record<string, never>;
